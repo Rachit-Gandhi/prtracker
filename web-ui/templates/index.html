@@ -1,0 +1,1703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub PR Analytics</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 20px;
+            padding-bottom: 20px;
+            background-color: #f8f9fa;
+        }
+        .navbar {
+            margin-bottom: 20px;
+        }
+        .card {
+            margin-bottom: 20px;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+        .card-header {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        .table-sm {
+            font-size: 0.9rem;
+        }
+        .table-hover tbody tr:hover {
+            background-color: rgba(0, 123, 255, 0.1);
+        }
+        .bg-light-success {
+            background-color: rgba(40, 167, 69, 0.1);
+        }
+        .bg-light-danger {
+            background-color: rgba(220, 53, 69, 0.1);
+        }
+        .bg-light-warning {
+            background-color: rgba(255, 193, 7, 0.1);
+        }
+        .bg-light-info {
+            background-color: rgba(23, 162, 184, 0.1);
+        }
+        .stats-card {
+            text-align: center;
+            padding: 15px;
+        }
+        .stats-card .number {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        .stats-card .label {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        .diff-stats {
+            display: inline-block;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+        .diff-stats .additions {
+            color: #28a745;
+        }
+        .diff-stats .deletions {
+            color: #dc3545;
+        }
+        #loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        .repo-badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background-color: #e9ecef;
+            font-size: 0.8rem;
+            margin-right: 5px;
+        }
+        .review-badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            margin-left: 5px;
+        }
+        .badge-approved {
+            background-color: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+        }
+        .badge-changes {
+            background-color: rgba(220, 53, 69, 0.2);
+            color: #dc3545;
+        }
+        .badge-commented {
+            background-color: rgba(108, 117, 125, 0.2);
+            color: #6c757d;
+        }
+        .chart-container {
+            min-height: 300px;
+        }
+        .code-section {
+            font-family: monospace;
+            white-space: pre-wrap;
+            font-size: 0.9rem;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .file-path {
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: #495057;
+        }
+        .tab-content {
+            padding: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="loading">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                    <i class="fab fa-github"></i> GitHub PR Analytics
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#dashboard" data-bs-toggle="tab">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#prs" data-bs-toggle="tab">Pull Requests</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#contributors" data-bs-toggle="tab">Contributors</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#code-stats" data-bs-toggle="tab">Code Stats</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#reviews" data-bs-toggle="tab">Reviews</a>
+                        </li>
+                    </ul>
+                    <div class="d-flex">
+                        <select id="repo-selector" class="form-select form-select-sm me-2">
+                            <option value="">All Repositories</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="tab-content">
+            <!-- Dashboard Tab -->
+            <div class="tab-pane fade show active" id="dashboard">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                Overall Statistics
+                            </div>
+                            <div class="card-body">
+                                <div class="row" id="summary-stats">
+                                    <!-- Summary stats will be populated here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                Pull Request Activity
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container">
+                                    <canvas id="activity-chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                Code Churn
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container">
+                                    <canvas id="churn-chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                Top Contributors
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-hover" id="top-contributors-table">
+                                        <thead>
+                                            <tr>
+                                                <th>User</th>
+                                                <th>PRs</th>
+                                                <th>Additions</th>
+                                                <th>Deletions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Top contributors will be populated here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                Most Discussed PRs
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-hover" id="most-discussed-table">
+                                        <thead>
+                                            <tr>
+                                                <th>PR</th>
+                                                <th>Comments</th>
+                                                <th>Changes</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Most discussed PRs will be populated here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                Repository Statistics
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-hover" id="repo-stats-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Repository</th>
+                                                <th>PRs</th>
+                                                <th>Files</th>
+                                                <th>Changes</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Repo stats will be populated here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                Review Statistics
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container">
+                                    <canvas id="review-stats-chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pull Requests Tab -->
+            <div class="tab-pane fade" id="prs">
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3 mb-2">
+                                        <select id="pr-state-filter" class="form-select">
+                                            <option value="all">All States</option>
+                                            <option value="open">Open</option>
+                                            <option value="closed">Closed</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <select id="pr-author-filter" class="form-select">
+                                            <option value="">All Authors</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <select id="pr-reviewer-filter" class="form-select">
+                                            <option value="">All Reviewers</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <div class="input-group">
+                                            <input type="text" id="pr-search" class="form-control" placeholder="Search...">
+                                            <button class="btn btn-outline-secondary" type="button" id="pr-search-btn">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover" id="pr-table">
+                                        <thead>
+                                            <tr>
+                                                <th>PR #</th>
+                                                <th>Repository</th>
+                                                <th>Title</th>
+                                                <th>Author</th>
+                                                <th>State</th>
+                                                <th>Created</th>
+                                                <th>Updated</th>
+                                                <th>Stats</th>
+                                                <th>Reviews</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- PRs will be populated here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <div>
+                                        <span id="pr-count-info">Showing 0 of 0</span>
+                                    </div>
+                                    <div>
+                                        <nav>
+                                            <ul class="pagination pagination-sm" id="pr-pagination">
+                                                <!-- Pagination will be populated here -->
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contributors Tab -->
+            <div class="tab-pane fade" id="contributors">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header">
+                                Contribution Activity
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container">
+                                    <canvas id="contributors-chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                Top Contributors
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container">
+                                    <canvas id="top-contributors-chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                Contributor Details
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-hover" id="contributors-table">
+                                        <thead>
+                                            <tr>
+                                                <th>User</th>
+                                                <th>PRs</th>
+                                                <th>Additions</th>
+                                                <th>Deletions</th>
+                                                <th>Files Changed</th>
+                                                <th>Review Comments</th>
+                                                <th>Reviews Given</th>
+                                                <th>Approvals</th>
+                                                <th>Changes Requested</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Contributors will be populated here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Code Stats Tab -->
+            <div class="tab-pane fade" id="code-stats">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                PR Size Distribution
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container">
+                                    <canvas id="pr-size-chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                File Extensions
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container">
+                                    <canvas id="file-extensions-chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                Most Modified Files
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-hover" id="hot-files-table">
+                                        <thead>
+                                            <tr>
+                                                <th>File</th>
+                                                <th>PRs</th>
+                                                <th>Changes</th>
+                                                <th>Additions</th>
+                                                <th>Deletions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Hot files will be populated here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reviews Tab -->
+            <div class="tab-pane fade" id="reviews">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                Review Distribution
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container">
+                                    <canvas id="review-distribution-chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                Top Reviewers
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-hover" id="top-reviewers-table">
+                                        <thead>
+                                            <tr>
+                                                <th>User</th>
+                                                <th>Reviews</th>
+                                                <th>Approvals</th>
+                                                <th>Changes Requested</th>
+                                                <th>Comments</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Top reviewers will be populated here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                Review Timeline
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container">
+                                    <canvas id="review-timeline-chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PR Detail Modal -->
+        <div class="modal fade" id="pr-detail-modal" tabindex="-1">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="pr-detail-title">PR Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row mb-3">
+                            <div class="col-md-8">
+                                <div id="pr-detail-info">
+                                    <!-- PR basic info will be populated here -->
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div id="pr-detail-stats">
+                                    <!-- PR stats will be populated here -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <ul class="nav nav-tabs" id="pr-detail-tabs">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-bs-toggle="tab" href="#pr-files">Files Changed</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#pr-comments">Comments</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#pr-reviews">Reviews</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#pr-diff">Full Diff</a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content" id="pr-detail-tab-content">
+                            <div class="tab-pane fade show active" id="pr-files">
+                                <div class="accordion" id="files-accordion">
+                                    <!-- Files will be populated here -->
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="pr-comments">
+                                <div id="comments-container">
+                                    <!-- Comments will be populated here -->
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="pr-reviews">
+                                <div id="reviews-container">
+                                    <!-- Reviews will be populated here -->
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="pr-diff">
+                                <div class="code-section" id="full-diff-container">
+                                    <!-- Full diff will be populated here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <a id="pr-github-link" href="#" target="_blank" class="btn btn-primary">View on GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script>
+        // Global variables
+        let currentRepoOwner = '';
+        let currentRepoName = '';
+        let charts = {};
+        
+        // Page initialization
+        $(document).ready(function() {
+            loadRepositories();
+            
+            // Initialize tabs
+            $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
+                const targetTab = $(e.target).attr('href');
+                switch(targetTab) {
+                    case '#dashboard':
+                        loadDashboard();
+                        break;
+                    case '#prs':
+                        loadPRs();
+                        break;
+                    case '#contributors':
+                        loadContributors();
+                        break;
+                    case '#code-stats':
+                        loadCodeStats();
+                        break;
+                    case '#reviews':
+                        loadReviews();
+                        break;
+                }
+            });
+            
+            // Repository selector change
+            $('#repo-selector').change(function() {
+                const selectedRepo = $(this).val();
+                if (selectedRepo) {
+                    const [owner, name] = selectedRepo.split('/');
+                    currentRepoOwner = owner;
+                    currentRepoName = name;
+                } else {
+                    currentRepoOwner = '';
+                    currentRepoName = '';
+                }
+                
+                // Reload current tab
+                const activeTab = $('.nav-link.active').attr('href');
+                $(`.nav-link[href="${activeTab}"]`).trigger('shown.bs.tab');
+            });
+            
+            // PR state filter change
+            $('#pr-state-filter').change(function() {
+                loadPRs();
+            });
+            
+            // PR author filter change
+            $('#pr-author-filter').change(function() {
+                loadPRs();
+            });
+            
+            // PR reviewer filter change
+            $('#pr-reviewer-filter').change(function() {
+                loadPRs();
+            });
+            
+            // PR search button click
+            $('#pr-search-btn').click(function() {
+                loadPRs();
+            });
+            
+            // PR search input enter key
+            $('#pr-search').keypress(function(e) {
+                if (e.which === 13) {
+                    loadPRs();
+                }
+            });
+            
+            // Initial load of the dashboard tab
+            loadDashboard();
+        });
+        
+        // Load repositories
+        function loadRepositories() {
+            $.getJSON('/api/repositories', function(data) {
+                const selectBox = $('#repo-selector');
+                selectBox.empty();
+                selectBox.append('<option value="">All Repositories</option>');
+                
+                data.forEach(function(repo) {
+                    selectBox.append(`<option value="${repo.owner}/${repo.name}">${repo.owner}/${repo.name}</option>`);
+                });
+            }).always(function() {
+                $('#loading').hide();
+            });
+        }
+        
+        // Load dashboard
+        function loadDashboard() {
+            $('#loading').show();
+            
+            let url = '/api/summary';
+            if (currentRepoOwner) {
+                url += `?repo_owner=${currentRepoOwner}`;
+                if (currentRepoName) {
+                    url += `&repo_name=${currentRepoName}`;
+                }
+            }
+            
+            $.getJSON(url, function(data) {
+                // Populate summary stats
+                renderSummaryStats(data.summary);
+                
+                // Populate top contributors table
+                renderTopContributors(data.top_contributors);
+                
+                // Populate most discussed PRs table
+                renderMostDiscussedPRs(data.most_discussed);
+                
+                // Populate repository stats table
+                renderRepoStats(data.repo_stats);
+                
+                // Load timeline data for activity chart
+                loadTimelineData();
+                
+                // Render review stats chart
+                renderReviewStatsChart(data.review_stats);
+            }).fail(function() {
+                alert('Failed to load dashboard data');
+            }).always(function() {
+                $('#loading').hide();
+            });
+        }
+        
+        // Load timeline data
+        function loadTimelineData() {
+            let url = '/api/timeline?period=month';
+            if (currentRepoOwner) {
+                url += `&repo_owner=${currentRepoOwner}`;
+                if (currentRepoName) {
+                    url += `&repo_name=${currentRepoName}`;
+                }
+            }
+            
+            $.getJSON(url, function(data) {
+                renderActivityChart(data);
+                renderChurnChart(data);
+            });
+        }
+        
+        // Load PRs
+        function loadPRs(page = 1) {
+            $('#loading').show();
+            
+            const pageSize = 20;
+            const offset = (page - 1) * pageSize;
+            const state = $('#pr-state-filter').val();
+            const author = $('#pr-author-filter').val();
+            const reviewer = $('#pr-reviewer-filter').val();
+            const search = $('#pr-search').val().trim();
+            
+            let url = `/api/prs?limit=${pageSize}&offset=${offset}&state=${state}`;
+            
+            if (currentRepoOwner) {
+                url += `&repo_owner=${currentRepoOwner}`;
+                if (currentRepoName) {
+                    url += `&repo_name=${currentRepoName}`;
+                }
+            }
+            
+            if (author) url += `&author=${author}`;
+            if (reviewer) url += `&reviewer=${reviewer}`;
+            if (search) url += `&search=${encodeURIComponent(search)}`;
+            
+            $.getJSON(url, function(data) {
+                renderPRTable(data.prs);
+                renderPagination(data.total, pageSize, page);
+                
+                // Update count info
+                const start = offset + 1;
+                const end = Math.min(offset + pageSize, data.total);
+                $('#pr-count-info').text(`Showing ${start}-${end} of ${data.total}`);
+            }).fail(function() {
+                alert('Failed to load PRs');
+            }).always(function() {
+                $('#loading').hide();
+            });
+            
+            // Load authors for filter if not already loaded
+            if ($('#pr-author-filter option').length <= 1) {
+                loadAuthors();
+            }
+            
+            // Load reviewers for filter if not already loaded
+            if ($('#pr-reviewer-filter option').length <= 1) {
+                loadReviewers();
+            }
+        }
+        
+        // Load authors
+        function loadAuthors() {
+            let url = '/api/authors';
+            if (currentRepoOwner) {
+                url += `?repo_owner=${currentRepoOwner}`;
+                if (currentRepoName) {
+                    url += `&repo_name=${currentRepoName}`;
+                }
+            }
+            
+            $.getJSON(url, function(data) {
+                const selectBox = $('#pr-author-filter');
+                selectBox.empty();
+                selectBox.append('<option value="">All Authors</option>');
+                
+                data.forEach(function(author) {
+                    selectBox.append(`<option value="${author}">${author}</option>`);
+                });
+            });
+        }
+        
+        // Load reviewers
+        function loadReviewers() {
+            let url = '/api/reviewers';
+            if (currentRepoOwner) {
+                url += `?repo_owner=${currentRepoOwner}`;
+                if (currentRepoName) {
+                    url += `&repo_name=${currentRepoName}`;
+                }
+            }
+            
+            $.getJSON(url, function(data) {
+                const selectBox = $('#pr-reviewer-filter');
+                selectBox.empty();
+                selectBox.append('<option value="">All Reviewers</option>');
+                
+                data.forEach(function(reviewer) {
+                    selectBox.append(`<option value="${reviewer}">${reviewer}</option>`);
+                });
+            });
+        }
+        
+        // Load contributors
+        function loadContributors() {
+            $('#loading').show();
+            
+            let url = '/api/summary';
+            if (currentRepoOwner) {
+                url += `?repo_owner=${currentRepoOwner}`;
+                if (currentRepoName) {
+                    url += `&repo_name=${currentRepoName}`;
+                }
+            }
+            
+            $.getJSON(url, function(data) {
+                renderContributorsChart(data.top_contributors);
+                renderContributorsTable(data.top_contributors);
+            }).fail(function() {
+                alert('Failed to load contributors data');
+            }).always(function() {
+                $('#loading').hide();
+            });
+        }
+        
+        // Load code stats
+        function loadCodeStats() {
+            $('#loading').show();
+            
+            let url = '/api/code-stats';
+            if (currentRepoOwner) {
+                url += `?repo_owner=${currentRepoOwner}`;
+                if (currentRepoName) {
+                    url += `&repo_name=${currentRepoName}`;
+                }
+            }
+            
+            $.getJSON(url, function(data) {
+                renderPRSizeChart(data.pr_size_stats);
+                renderFileExtensionsChart(data.extension_stats);
+                renderHotFilesTable(data.file_stats);
+            }).fail(function() {
+                alert('Failed to load code stats data');
+            }).always(function() {
+                $('#loading').hide();
+            });
+        }
+        
+        // Load reviews
+        function loadReviews() {
+            $('#loading').show();
+            
+            let url = '/api/summary';
+            if (currentRepoOwner) {
+                url += `?repo_owner=${currentRepoOwner}`;
+                if (currentRepoName) {
+                    url += `&repo_name=${currentRepoName}`;
+                }
+            }
+            
+            $.getJSON(url, function(data) {
+                renderReviewDistributionChart(data.review_stats);
+                renderTopReviewersTable(data.top_reviewers);
+                
+                // Load review timeline data
+                loadReviewTimelineData();
+            }).fail(function() {
+                alert('Failed to load reviews data');
+            }).always(function() {
+                $('#loading').hide();
+            });
+        }
+        
+        // Load review timeline data
+        function loadReviewTimelineData() {
+            let url = '/api/timeline?period=month';
+            if (currentRepoOwner) {
+                url += `&repo_owner=${currentRepoOwner}`;
+                if (currentRepoName) {
+                    url += `&repo_name=${currentRepoName}`;
+                }
+            }
+            
+            $.getJSON(url, function(data) {
+                renderReviewTimelineChart(data);
+            });
+        }
+        
+        // Load PR details
+        function loadPRDetails(repoOwner, repoName, prNumber) {
+            $('#loading').show();
+            
+            const url = `/api/pr/${repoOwner}/${repoName}/${prNumber}`;
+            
+            $.getJSON(url, function(data) {
+                renderPRDetails(data);
+                $('#pr-detail-modal').modal('show');
+            }).fail(function() {
+                alert('Failed to load PR details');
+            }).always(function() {
+                $('#loading').hide();
+            });
+        }
+        
+        // Render summary stats
+        function renderSummaryStats(summary) {
+            const container = $('#summary-stats');
+            container.empty();
+            
+            const stats = [
+                { label: 'Total PRs', value: summary.total_prs, icon: 'fa-code-pull-request', color: 'primary' },
+                { label: 'Open PRs', value: summary.open_prs, icon: 'fa-door-open', color: 'success' },
+                { label: 'Closed PRs', value: summary.closed_prs, icon: 'fa-door-closed', color: 'secondary' },
+                { label: 'Contributors', value: summary.unique_authors, icon: 'fa-users', color: 'info' },
+                { label: 'Files Changed', value: summary.total_files_changed, icon: 'fa-file-code', color: 'warning' },
+                { label: 'Lines Added', value: summary.total_additions, icon: 'fa-plus', color: 'success' },
+                { label: 'Lines Deleted', value: summary.total_deletions, icon: 'fa-minus', color: 'danger' },
+                { label: 'Avg PR Size', value: Math.round(summary.avg_pr_size), icon: 'fa-chart-line', color: 'info' }
+            ];
+            
+            stats.forEach(function(stat) {
+                container.append(`
+                    <div class="col-md-3 col-sm-6 mb-3">
+                        <div class="stats-card">
+                            <div class="text-${stat.color} mb-2">
+                                <i class="fas ${stat.icon} fa-2x"></i>
+                            </div>
+                            <div class="number">${stat.value.toLocaleString()}</div>
+                            <div class="label">${stat.label}</div>
+                        </div>
+                    </div>
+                `);
+            });
+        }
+        
+        // Render top contributors table
+        function renderTopContributors(contributors) {
+            const table = $('#top-contributors-table tbody');
+            table.empty();
+            
+            contributors.forEach(function(contributor) {
+                table.append(`
+                    <tr>
+                        <td>
+                            <i class="fas fa-user me-1"></i>
+                            ${contributor.user_login}
+                        </td>
+                        <td>${contributor.pr_count}</td>
+                        <td class="text-success">+${contributor.total_additions.toLocaleString()}</td>
+                        <td class="text-danger">-${contributor.total_deletions.toLocaleString()}</td>
+                    </tr>
+                `);
+            });
+        }
+        
+        // Render most discussed PRs table
+        function renderMostDiscussedPRs(prs) {
+            const table = $('#most-discussed-table tbody');
+            table.empty();
+            
+            prs.forEach(function(pr) {
+                table.append(`
+                    <tr onclick="loadPRDetails('${pr.repo_owner}', '${pr.repo_name}', ${pr.number})" style="cursor: pointer;">
+                        <td>
+                            <span class="repo-badge">${pr.repo_owner}/${pr.repo_name}</span>
+                            #${pr.number}: ${pr.title.length > 50 ? pr.title.substring(0, 50) + '...' : pr.title}
+                        </td>
+                        <td>${pr.discussion_count}</td>
+                        <td>
+                            <div class="diff-stats">
+                                <span class="additions">+${pr.additions.toLocaleString()}</span>
+                                <span class="deletions">-${pr.deletions.toLocaleString()}</span>
+                                <span>(${pr.files_changed} files)</span>
+                            </div>
+                        </td>
+                    </tr>
+                `);
+            });
+        }
+        
+        // Render repository stats table
+        function renderRepoStats(repos) {
+            const table = $('#repo-stats-table tbody');
+            table.empty();
+            
+            repos.forEach(function(repo) {
+                table.append(`
+                    <tr>
+                        <td>
+                            <a href="#" onclick="$('#repo-selector').val('${repo.repo_owner}/${repo.repo_name}').trigger('change'); return false;">
+                                ${repo.repo_owner}/${repo.repo_name}
+                            </a>
+                        </td>
+                        <td>${repo.pr_count}</td>
+                        <td>${repo.total_files_changed.toLocaleString()}</td>
+                        <td>
+                            <div class="diff-stats">
+                                <span class="additions">+${repo.total_additions.toLocaleString()}</span>
+                                <span class="deletions">-${repo.total_deletions.toLocaleString()}</span>
+                            </div>
+                        </td>
+                    </tr>
+                `);
+            });
+        }
+        
+        // Render activity chart
+        function renderActivityChart(data) {
+            const ctx = document.getElementById('activity-chart').getContext('2d');
+            
+            if (charts.activity) {
+                charts.activity.destroy();
+            }
+            
+            const labels = data.map(item => item.time_period);
+            const prCounts = data.map(item => item.pr_count);
+            
+            charts.activity = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Pull Requests',
+                        data: prCounts,
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Number of PRs'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Render churn chart
+        function renderChurnChart(data) {
+            const ctx = document.getElementById('churn-chart').getContext('2d');
+            
+            if (charts.churn) {
+                charts.churn.destroy();
+            }
+            
+            const labels = data.map(item => item.time_period);
+            const additions = data.map(item => item.additions);
+            const deletions = data.map(item => -item.deletions); // Negative for visual effect
+            
+            charts.churn = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Additions',
+                            data: additions,
+                            backgroundColor: 'rgba(40, 167, 69, 0.5)',
+                            borderColor: 'rgba(40, 167, 69, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Deletions',
+                            data: deletions,
+                            backgroundColor: 'rgba(220, 53, 69, 0.5)',
+                            borderColor: 'rgba(220, 53, 69, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Lines of Code'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Render review stats chart
+        function renderReviewStatsChart(reviewStats) {
+            const ctx = document.getElementById('review-stats-chart').getContext('2d');
+            
+            if (charts.reviewStats) {
+                charts.reviewStats.destroy();
+            }
+            
+            const labels = reviewStats.map(item => item.state);
+            const counts = reviewStats.map(item => item.count);
+            
+            // Colors based on review state
+            const backgroundColors = reviewStats.map(item => {
+                switch(item.state) {
+                    case 'APPROVED': return 'rgba(40, 167, 69, 0.5)';
+                    case 'CHANGES_REQUESTED': return 'rgba(220, 53, 69, 0.5)';
+                    case 'COMMENTED': return 'rgba(108, 117, 125, 0.5)';
+                    case 'DISMISSED': return 'rgba(255, 193, 7, 0.5)';
+                    default: return 'rgba(0, 123, 255, 0.5)';
+                }
+            });
+
+            const borderColors = reviewStats.map(item => {
+                switch(item.state) {
+                    case 'APPROVED': return 'rgba(40, 167, 69, 1)';
+                    case 'CHANGES_REQUESTED': return 'rgba(220, 53, 69, 1)';
+                    case 'COMMENTED': return 'rgba(108, 117, 125, 1)';
+                    case 'DISMISSED': return 'rgba(255, 193, 7, 1)';
+                    default: return 'rgba(0, 123, 255, 1)';
+                }
+            });
+
+            charts.reviewStats = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: counts,
+                        backgroundColor: backgroundColors,
+                        borderColor: borderColors,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: ${value} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Render PR table
+        function renderPRTable(prs) {
+            const table = $('#pr-table tbody');
+            table.empty();
+            
+            prs.forEach(function(pr) {
+                const createdDate = moment(pr.created_at).format('MMM D, YYYY');
+                const updatedDate = moment(pr.updated_at).format('MMM D, YYYY');
+                const stateClass = pr.state === 'open' ? 'bg-light-success' : 'bg-light-secondary';
+                
+                let reviewBadges = '';
+                if (pr.approval_count > 0) {
+                    reviewBadges += `<span class="review-badge badge-approved">${pr.approval_count} <i class="fas fa-check"></i></span>`;
+                }
+                if (pr.change_request_count > 0) {
+                    reviewBadges += `<span class="review-badge badge-changes">${pr.change_request_count} <i class="fas fa-times"></i></span>`;
+                }
+                if (pr.review_count - pr.approval_count - pr.change_request_count > 0) {
+                    const commentCount = pr.review_count - pr.approval_count - pr.change_request_count;
+                    reviewBadges += `<span class="review-badge badge-commented">${commentCount} <i class="fas fa-comment"></i></span>`;
+                }
+                
+                table.append(`
+                    <tr onclick="loadPRDetails('${pr.repo_owner}', '${pr.repo_name}', ${pr.number})" style="cursor: pointer;">
+                        <td>#${pr.number}</td>
+                        <td><span class="repo-badge">${pr.repo_owner}/${pr.repo_name}</span></td>
+                        <td>${pr.title}</td>
+                        <td>${pr.user_login}</td>
+                        <td><span class="badge ${stateClass}">${pr.state}</span></td>
+                        <td>${createdDate}</td>
+                        <td>${updatedDate}</td>
+                        <td>
+                            <div class="diff-stats">
+                                <span class="additions">+${pr.additions.toLocaleString()}</span>
+                                <span class="deletions">-${pr.deletions.toLocaleString()}</span>
+                                <span>(${pr.files_changed} files)</span>
+                            </div>
+                        </td>
+                        <td>${reviewBadges}</td>
+                    </tr>
+                `);
+            });
+        }
+        
+        // Render pagination
+        function renderPagination(total, pageSize, currentPage) {
+            const pagination = $('#pr-pagination');
+            pagination.empty();
+            
+            const totalPages = Math.ceil(total / pageSize);
+            
+            // Previous button
+            pagination.append(`
+                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="loadPRs(${currentPage - 1}); return false;">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                </li>
+            `);
+            
+            // First page
+            pagination.append(`
+                <li class="page-item ${currentPage === 1 ? 'active' : ''}">
+                    <a class="page-link" href="#" onclick="loadPRs(1); return false;">1</a>
+                </li>
+            `);
+            
+            // Ellipsis after first page
+            if (currentPage > 3) {
+                pagination.append(`
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                `);
+            }
+            
+            // Pages around current page
+            for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
+                if (i === 1 || i === totalPages) continue; // Skip first and last page (handled separately)
+                pagination.append(`
+                    <li class="page-item ${i === currentPage ? 'active' : ''}">
+                        <a class="page-link" href="#" onclick="loadPRs(${i}); return false;">${i}</a>
+                    </li>
+                `);
+            }
+            
+            // Ellipsis before last page
+            if (currentPage < totalPages - 2) {
+                pagination.append(`
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                `);
+            }
+            
+            // Last page
+            if (totalPages > 1) {
+                pagination.append(`
+                    <li class="page-item ${currentPage === totalPages ? 'active' : ''}">
+                        <a class="page-link" href="#" onclick="loadPRs(${totalPages}); return false;">${totalPages}</a>
+                    </li>
+                `);
+            }
+            
+            // Next button
+            pagination.append(`
+                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="loadPRs(${currentPage + 1}); return false;">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </li>
+            `);
+        }
+        
+        // Render contributors chart
+        function renderContributorsChart(contributors) {
+            const ctx = document.getElementById('contributors-chart').getContext('2d');
+            
+            if (charts.contributors) {
+                charts.contributors.destroy();
+            }
+            
+            const labels = contributors.map(item => item.user_login);
+            const prCounts = contributors.map(item => item.pr_count);
+            const additions = contributors.map(item => item.total_additions);
+            const deletions = contributors.map(item => item.total_deletions);
+            
+            charts.contributors = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Pull Requests',
+                            data: prCounts,
+                            backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: 'Additions',
+                            data: additions,
+                            backgroundColor: 'rgba(40, 167, 69, 0.5)',
+                            borderColor: 'rgba(40, 167, 69, 1)',
+                            borderWidth: 1,
+                            yAxisID: 'y1'
+                        },
+                        {
+                            label: 'Deletions',
+                            data: deletions,
+                            backgroundColor: 'rgba(220, 53, 69, 0.5)',
+                            borderColor: 'rgba(220, 53, 69, 1)',
+                            borderWidth: 1,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            position: 'left',
+                            title: {
+                                display: true,
+                                text: 'Number of PRs'
+                            }
+                        },
+                        y1: {
+                            beginAtZero: true,
+                            position: 'right',
+                            title: {
+                                display: true,
+                                text: 'Lines of Code'
+                            },
+                            grid: {
+                                drawOnChartArea: false
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Also render top contributors pie chart
+            const pieCtx = document.getElementById('top-contributors-chart').getContext('2d');
+            
+            if (charts.topContributors) {
+                charts.topContributors.destroy();
+            }
+            
+            // Use only top 5 contributors for pie chart
+            const topLabels = labels.slice(0, 5);
+            const topPRs = prCounts.slice(0, 5);
+            
+            charts.topContributors = new Chart(pieCtx, {
+                type: 'pie',
+                data: {
+                    labels: topLabels,
+                    datasets: [{
+                        data: topPRs,
+                        backgroundColor: [
+                            'rgba(54, 162, 235, 0.5)',
+                            'rgba(255, 99, 132, 0.5)',
+                            'rgba(255, 206, 86, 0.5)',
+                            'rgba(75, 192, 192, 0.5)',
+                            'rgba(153, 102, 255, 0.5)'
+                        ],
+                        borderColor: [
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: ${value} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Render contributors table
+        function renderContributorsTable(contributors) {
+            // This would need more data that should come from a dedicated API endpoint
+            // For now, just display the top contributors data we have
+            const table = $('#contributors-table tbody');
+            table.empty();
+            
+            contributors.forEach(function(contributor) {
+                table.append(`
+                    <tr>
+                        <td>
+                            <i class="fas fa-user me-1"></i>
+                            ${contributor.user_login}
+                        </td>
+                        <td>${contributor.pr_count}</td>
+                        <td class="text-success">+${contributor.total_additions.toLocaleString()}</td>
+                        <td class="text-danger">-${contributor.total_deletions.toLocaleString()}</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                `);
+            });
+        }
+        
+        // Render PR size chart
+        function renderPRSizeChart(sizeStats) {
+            const ctx = document.getElementById('pr-size-chart').getContext('2d');
+            
+            if (charts.prSize) {
+                charts.prSize.destroy();
+            }
+            
+            const labels = sizeStats.map(item => item.size_category);
+            const counts = sizeStats.map(item => item.pr_count);
+            
+            charts.prSize = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Pull Requests',
+                        data: counts,
+                        backgroundColor: [
+                            'rgba(40, 167, 69, 0.5)',
+                            'rgba(0, 123, 255, 0.5)',
+                            'rgba(255, 193, 7, 0.5)',
+                            'rgba(255, 136, 0, 0.5)',
+                            'rgba(220, 53, 69, 0.5)',
+                            'rgba(108, 117, 125, 0.5)'
+                        ],
+                        borderColor: [
+                            'rgba(40, 167, 69, 1)',
+                            'rgba(0, 123, 255, 1)',
+                            'rgba(255, 193, 7, 1)',
+                            'rgba(255, 136, 0, 1)',
+                            'rgba(220, 53, 69, 1)',
+                            'rgba(108, 117, 125, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Number of PRs'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Render file extensions chart
+        function renderFileExtensionsChart(extensionStats) {
+            const ctx = document.getElementById('file-extensions-chart').getContext('2d');
+            
+            if (charts.fileExtensions) {
+                charts.fileExtensions.destroy();
+            }
+            
+            const labels = extensionStats.map(item => item.extension);
+            const counts = extensionStats.map(item => item.file_count);
+            
+            charts.fileExtensions = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: counts,
+                        backgroundColor: [
+                            'rgba(54, 162, 235, 0.5)',
+                            'rgba(255, 99, 132, 0.5)',
+                            'rgba(255, 206, 86, 0.5)',
+                            'rgba(75, 192, 192, 0.5)',
+                            'rgba(153, 102, 255, 0.5)',
+                            'rgba(255, 159, 64, 0.5)',
+                            'rgba(40, 167, 69, 0.5)',
+                            'rgba(220, 53, 69, 0.5)',
+                            'rgba(108, 117, 125, 0.5)',
+                            'rgba(23, 162, 184, 0.5)',
+                            'rgba(255, 193, 7, 0.5)',
+                            'rgba(111, 66, 193, 0.5)',
+                            'rgba(253, 126, 20, 0.5)',
+                            'rgba(32, 201, 151, 0.5)',
+                            'rgba(73, 80, 87, 0.5)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: ${value} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Render hot files table
+        function renderHotFilesTable(files) {
+            const table = $('#hot-files-table tbody');
+            table.empty();
+            
+            files.forEach(function(file) {
+                table.append(`
+                    <tr>
+                        <td>
+                            <span class="file-path">${file.filename}</span>
+                        </td>
+                        <td>${file.pr_count}</td>
+                        <td>${file.total_changes.toLocaleString()}</td>
+                        <td class="text-success">+${file.total_additions.toLocaleString()}</td>
+                        <td class="text-danger">-${file.total_deletions.toLocaleString()}</td>
+                    </tr>
+                `);
+            });
+        }
+        
+        // Render review distribution chart
+        function renderReviewDistributionChart(reviewStats) {
+            const ctx = document.getElementById('review-distribution-chart').getContext('2d');
+            
+            if (charts.reviewDistribution) {
+                charts.reviewDistribution.destroy();
+            }
+            
+            const labels = reviewStats.map(item => item.state);
+            const counts = reviewStats.map(item => item.count);
+            
+            // Colors based on review state
+            const backgroundColors = reviewStats.map(item => {
+                switch(item.state) {
+                    case 'APPROVED': return 'rgba(40, 167, 69, 0.5)';
+                    case 'CHANGES_REQUESTED': return 'rgba(220, 53, 69, 0.5)';
+                    case 'COMMENTED': return 'rgba(108, 117, 125, 0.5)';
+                    case 'DISMISSED': return 'rgba(255, 193, 7, 0.5)';
+                    default: return 'rgba(0, 123, 255, 0.5)';
+                }
+            });
+
+            const borderColors = reviewStats.map(item => {
+                switch(item.state) {
+                    case 'APPROVED': return 'rgba(40, 167, 69, 1)';
+                    case 'CHANGES_REQUESTED': return 'rgba(220, 53, 69, 1)';
+                    case 'COMMENTED': return 'rgba(108, 117, 125, 1)';
+                    case 'DISMISSED': return 'rgba(255, 193, 7, 1)';
+                    default: return 'rgba(0, 123, 255, 1)';
+                }
+            });
+
+            charts.reviewDistribution = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: counts,
+                        backgroundColor: backgroundColors,
+                        borderColor: borderColors,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: ${value} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
