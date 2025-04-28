@@ -12,7 +12,7 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$MYSQL_ROOT_PASSWORD"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -32,11 +32,79 @@ services:
       - DB_PASSWORD=prpassword
       - DB_NAME=github_prs
       - GITHUB_TOKEN=${GITHUB_TOKEN}
-      - GITHUB_OWNER=${GITHUB_OWNER}
-      - GITHUB_REPO=${GITHUB_REPO}
-      - FETCH_SINCE_DAYS=30
+      - GITHUB_REPOS=${GITHUB_REPOS}
+      - FETCH_SINCE_DAYS=${FETCH_SINCE_DAYS:-30}
     volumes:
       - ./:/app
+
+  web-ui:
+    build:
+      context: ./web-ui
+      dockerfile: Dockerfile
+    container_name: github-pr-web-ui
+    ports:
+      - "5000:5000"
+    environment:
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USER=pruser
+      - DB_PASSWORD=prpassword
+      - DB_NAME=github_prs
+    depends_on:
+      - mysql
+      - app
+    volumes:
+      - ./web-ui:/app
+
+  # Service for scheduled updates
+  scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: github-pr-scheduler
+    command: sh -c "while true; do /app/github-pr-tracker; sleep ${UPDATE_INTERVAL:-3600}; done"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USER=pruser
+      - DB_PASSWORD=prpassword
+      - DB_NAME=github_prs
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      - GITHUB_REPOS=${GITHUB_REPOS}
+      - FETCH_SINCE_DAYS=${FETCH_SINCE_DAYS:-30}
+    volumes:
+      - ./:/app
+
+  # AI PR reviewer service (database-only storage)
+  ai-reviewer:
+    build:
+      context: ./ai-reviewer
+      dockerfile: Dockerfile
+    container_name: github-pr-ai-reviewer
+    depends_on:
+      mysql:
+        condition: service_healthy
+      app:
+        condition: service_started
+    environment:
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USER=pruser
+      - DB_PASSWORD=prpassword
+      - DB_NAME=github_prs
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_MODEL=${OPENAI_MODEL:-gpt-4o-mini}
+      - MAX_PRS_TO_REVIEW=${MAX_PRS_TO_REVIEW:-10}
+      - REVIEW_ONLY_OPEN_PRS=${REVIEW_ONLY_OPEN_PRS:-true}
+      - DAYS_SINCE_UPDATE=${DAYS_SINCE_UPDATE:-7}
+      - INITIAL_WAIT_TIME=${INITIAL_WAIT_TIME:-120}
+    restart: on-failure
+    command: sh -c "echo 'Waiting for PR fetch to complete...' && sleep ${INITIAL_WAIT_TIME:-120} && while true; do python /app/ai-pr-reviewer.py && echo 'AI review completed. Next run in ${AI_REVIEW_INTERVAL:-7200} seconds.' || echo 'AI review failed. Will retry later.'; sleep ${AI_REVIEW_INTERVAL:-7200}; done"
+    volumes:
+      - ./ai-reviewer:/app
 
 volumes:
   mysql-data:

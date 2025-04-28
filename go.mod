@@ -7,6 +7,7 @@ require (
 	github.com/go-sql-driver/mysql v1.7.1
 	github.com/google/go-github/v55 v55.0.0
 	golang.org/x/oauth2 v0.15.0
+	golang.org/x/time v0.3.0
 )
 
 require (
