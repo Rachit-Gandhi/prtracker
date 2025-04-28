@@ -12,7 +12,7 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$MYSQL_ROOT_PASSWORD"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -56,7 +56,7 @@ services:
     volumes:
       - ./web-ui:/app
 
-  # New service for scheduled updates
+  # Service for scheduled updates
   scheduler:
     build:
       context: .
@@ -77,6 +77,34 @@ services:
       - FETCH_SINCE_DAYS=${FETCH_SINCE_DAYS:-30}
     volumes:
       - ./:/app
+
+  # AI PR reviewer service (database-only storage)
+  ai-reviewer:
+    build:
+      context: ./ai-reviewer
+      dockerfile: Dockerfile
+    container_name: github-pr-ai-reviewer
+    depends_on:
+      mysql:
+        condition: service_healthy
+      app:
+        condition: service_started
+    environment:
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USER=pruser
+      - DB_PASSWORD=prpassword
+      - DB_NAME=github_prs
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_MODEL=${OPENAI_MODEL:-gpt-4o-mini}
+      - MAX_PRS_TO_REVIEW=${MAX_PRS_TO_REVIEW:-10}
+      - REVIEW_ONLY_OPEN_PRS=${REVIEW_ONLY_OPEN_PRS:-true}
+      - DAYS_SINCE_UPDATE=${DAYS_SINCE_UPDATE:-7}
+      - INITIAL_WAIT_TIME=${INITIAL_WAIT_TIME:-120}
+    restart: on-failure
+    command: sh -c "echo 'Waiting for PR fetch to complete...' && sleep ${INITIAL_WAIT_TIME:-120} && while true; do python /app/ai-pr-reviewer.py && echo 'AI review completed. Next run in ${AI_REVIEW_INTERVAL:-7200} seconds.' || echo 'AI review failed. Will retry later.'; sleep ${AI_REVIEW_INTERVAL:-7200}; done"
+    volumes:
+      - ./ai-reviewer:/app
 
 volumes:
   mysql-data:

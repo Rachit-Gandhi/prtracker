@@ -1,0 +1,55 @@
+2025-04-20 06:09:50,875 - ai-pr-reviewer - INFO - Connected to MySQL database: github_prs
+2025-04-20 06:09:50,959 - ai-pr-reviewer - INFO - Review tables created or verified
+2025-04-20 06:09:50,963 - ai-pr-reviewer - INFO - Found 0 PRs for review
+2025-04-20 06:09:50,964 - ai-pr-reviewer - INFO - Found 0 PRs to review
+2025-04-20 06:09:50,964 - ai-pr-reviewer - INFO - Reviewed 0 PRs
+2025-04-20 06:09:50,964 - ai-pr-reviewer - INFO - Disconnected from MySQL database
+2025-04-21 00:16:10,340 - ai-pr-reviewer - INFO - Connected to MySQL database: github_prs
+2025-04-21 00:16:10,390 - ai-pr-reviewer - INFO - Review tables created or verified
+2025-04-21 00:16:10,398 - ai-pr-reviewer - INFO - Found 0 PRs for review
+2025-04-21 00:16:10,399 - ai-pr-reviewer - INFO - Found 0 PRs to review
+2025-04-21 00:16:10,399 - ai-pr-reviewer - INFO - Reviewed 0 PRs
+2025-04-21 00:16:10,400 - ai-pr-reviewer - INFO - Disconnected from MySQL database
+2025-04-21 11:29:56,746 - ai-pr-reviewer - INFO - Connected to MySQL database: github_prs
+2025-04-21 11:29:56,770 - ai-pr-reviewer - INFO - Review tables created or verified
+2025-04-21 11:29:56,783 - ai-pr-reviewer - INFO - Found 0 PRs for review
+2025-04-21 11:29:56,783 - ai-pr-reviewer - INFO - Found 0 PRs to review
+2025-04-21 11:29:56,784 - ai-pr-reviewer - INFO - Reviewed 0 PRs
+2025-04-21 11:29:56,785 - ai-pr-reviewer - INFO - Disconnected from MySQL database
+2025-04-21 15:54:04,012 - ai-pr-reviewer - INFO - Connected to MySQL database: github_prs
+2025-04-21 15:54:04,043 - ai-pr-reviewer - INFO - Review tables created or verified
+2025-04-21 15:54:04,061 - ai-pr-reviewer - INFO - Found 0 PRs for review
+2025-04-21 15:54:04,062 - ai-pr-reviewer - INFO - Found 0 PRs to review
+2025-04-21 15:54:04,062 - ai-pr-reviewer - INFO - Reviewed 0 PRs
+2025-04-21 15:54:04,064 - ai-pr-reviewer - INFO - Disconnected from MySQL database
+2025-04-21 23:07:25,742 - ai-pr-reviewer - INFO - Connected to MySQL database: github_prs
+2025-04-21 23:07:25,764 - ai-pr-reviewer - INFO - Review tables created or verified
+2025-04-21 23:07:25,777 - ai-pr-reviewer - INFO - Found 0 PRs for review
+2025-04-21 23:07:25,777 - ai-pr-reviewer - INFO - Found 0 PRs to review
+2025-04-21 23:07:25,778 - ai-pr-reviewer - INFO - Reviewed 0 PRs
+2025-04-21 23:07:25,779 - ai-pr-reviewer - INFO - Disconnected from MySQL database
+2025-04-22 10:06:36,042 - ai-pr-reviewer - INFO - Connected to MySQL database: github_prs
+2025-04-22 10:06:36,064 - ai-pr-reviewer - INFO - Review tables created or verified
+2025-04-22 10:06:36,076 - ai-pr-reviewer - INFO - Found 0 PRs for review
+2025-04-22 10:06:36,077 - ai-pr-reviewer - INFO - Found 0 PRs to review
+2025-04-22 10:06:36,078 - ai-pr-reviewer - INFO - Reviewed 0 PRs
+2025-04-22 10:06:36,079 - ai-pr-reviewer - INFO - Disconnected from MySQL database
+2025-04-22 14:36:06,763 - ai-pr-reviewer - INFO - Connected to MySQL database: github_prs
+2025-04-22 14:36:07,110 - ai-pr-reviewer - INFO - Review tables created or verified
+2025-04-22 14:36:07,123 - ai-pr-reviewer - INFO - Found 0 PRs for review
+2025-04-22 14:36:07,124 - ai-pr-reviewer - INFO - Found 0 PRs to review
+2025-04-22 14:36:07,124 - ai-pr-reviewer - INFO - Reviewed 0 PRs
+2025-04-22 14:36:07,125 - ai-pr-reviewer - INFO - Disconnected from MySQL database
+2025-04-22 23:58:14,852 - ai-pr-reviewer - INFO - Connected to MySQL database: github_prs
+2025-04-22 23:58:14,869 - ai-pr-reviewer - INFO - Review tables created or verified
+2025-04-22 23:58:14,881 - ai-pr-reviewer - INFO - Found 0 PRs for review
+2025-04-22 23:58:14,881 - ai-pr-reviewer - INFO - Found 0 PRs to review
+2025-04-22 23:58:14,882 - ai-pr-reviewer - INFO - Reviewed 0 PRs
+2025-04-22 23:58:14,882 - ai-pr-reviewer - INFO - Disconnected from MySQL database
+2025-04-23 02:12:59,280 - ai-pr-reviewer - INFO - Connected to MySQL database: github_prs
+2025-04-23 02:12:59,311 - ai-pr-reviewer - INFO - Review tables created or verified
+2025-04-23 02:12:59,324 - ai-pr-reviewer - INFO - Found 0 PRs for review
+2025-04-23 02:12:59,325 - ai-pr-reviewer - INFO - Found 0 PRs to review
+2025-04-23 02:12:59,325 - ai-pr-reviewer - INFO - Reviewed 0 PRs
+2025-04-23 02:12:59,326 - ai-pr-reviewer - INFO - Disconnected from MySQL database
+2025-04-28 23:27:48,443 - ai-pr-reviewer - ERROR - Error connecting to MySQL database: 2005 (HY000): Unknown MySQL server host 'mysql' (-2)
