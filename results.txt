@@ -1,0 +1,80 @@
+================================================================================  
+ANALYSIS RESULTS FOR 12 PULL REQUESTS
+================================================================================  
+
+Comment Counts:
+  Human Reviewer Comments: 41
+  AI Reviewer Comments: 189
+
+PR by PR Quality Assessments:
+
+  PR #448: Gradle Plugin - isolated Kotlin compiler
+    AI Review Quality Score: 7/10
+    Could Substitute for Human Review: False
+    File Overlap Score: 0.00
+
+  PR #450: Add some more config properties to jte-models.
+    AI Review Quality Score: 7/10
+    Could Substitute for Human Review: False
+    File Overlap Score: 0.00
+
+  PR #124708: Throw exception for unknown token in RestIndexPutAliasAction        
+    AI Review Quality Score: 8/10
+    Could Substitute for Human Review: True
+    File Overlap Score: 0.17
+
+  PR #126739: Update sparse_vector field mapping to include default setting for token pruning
+    AI Review Quality Score: 4/10
+    Could Substitute for Human Review: False
+    File Overlap Score: 0.56
+
+  PR #126786: Account for time taken to write index buffers in IndexingMemoryController
+    AI Review Quality Score: 4/10
+    Could Substitute for Human Review: False
+    File Overlap Score: 0.12
+
+  PR #127454: Remove translog from javadoc for acquireHistoryRetentionLock        
+    AI Review Quality Score: 7/10
+    Could Substitute for Human Review: False
+    File Overlap Score: 0.00
+
+  PR #127458: [Failure Store] Fix resolved alias retrieval for failure indices    
+    AI Review Quality Score: 6/10
+    Could Substitute for Human Review: False
+    File Overlap Score: 0.33
+
+  PR #127480: Enable FAILURE_STORE feature flag for LogsIndexModeFullClusterRestartIT
+    AI Review Quality Score: 6/10
+    Could Substitute for Human Review: False
+    File Overlap Score: 0.00
+
+  PR #127483: Add tests for block loaders of multifields
+    AI Review Quality Score: 6/10
+    Could Substitute for Human Review: False
+    File Overlap Score: 0.00
+
+  PR #127486: [WIP] Generate a test dependencies file to support unit tests in entitlements
+    AI Review Quality Score: 7/10
+    Could Substitute for Human Review: False
+    File Overlap Score: 0.00
+
+  PR #127487: handle retries for rate-limited non-streaming requests to the Elastic Inference Service
+    AI Review Quality Score: 7/10
+    Could Substitute for Human Review: False
+    File Overlap Score: 0.00
+
+  PR #127488: Enable time-series block hash
+    AI Review Quality Score: 6/10
+    Could Substitute for Human Review: False
+    File Overlap Score: 0.00
+
+Aggregate Metrics:
+  Average File Overlap Score: 0.10
+  Average Sentiment Agreement: 0.57
+  Average Content Overlap: 0.23
+  Human Comments Without AI Match: 1
+  AI Comments Without Human Match: 96
+
+Overall AI Review Assessment:
+  Average Quality Score: 6.2/10
+  Could Substitute for Human Review: 8.3% of PRs

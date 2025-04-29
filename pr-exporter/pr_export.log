@@ -1,0 +1,172 @@
+2025-04-29 01:13:28,732 - pr-export - INFO - Connected to MySQL database: github_prs
+2025-04-29 01:13:28,735 - pr-export - ERROR - Error querying database: 3065 (HY000): Expression #1 of ORDER BY clause is not in SELECT list, references column 'github_prs.pr.updated_at' which is not in SELECT list; this is incompatible with DISTINCT
+2025-04-29 01:13:28,736 - pr-export - INFO - Exported 0 PRs to JSON files in /app/exported_prs
+2025-04-29 01:13:28,737 - pr-export - INFO - Disconnected from MySQL database
+2025-04-29 01:17:19,816 - pr-export - INFO - Connected to MySQL database: github_prs
+2025-04-29 01:17:19,823 - pr-export - INFO - Found 7 PRs with AI reviews
+2025-04-29 01:17:19,851 - pr-export - INFO - Exported PR #127483 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127483.json
+2025-04-29 01:17:19,862 - pr-export - INFO - Exported PR #127488 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127488.json
+2025-04-29 01:17:19,875 - pr-export - INFO - Exported PR #124708 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR124708.json
+2025-04-29 01:17:19,892 - pr-export - INFO - Exported PR #126739 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR126739.json
+2025-04-29 01:17:19,910 - pr-export - INFO - Exported PR #126786 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR126786.json
+2025-04-29 01:17:19,919 - pr-export - INFO - Exported PR #127487 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127487.json
+2025-04-29 01:17:19,929 - pr-export - INFO - Exported PR #127454 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127454.json
+2025-04-29 01:17:19,930 - pr-export - INFO - Exported 7 PRs to JSON files in /app/exported_prs
+2025-04-29 01:17:19,931 - pr-export - INFO - Disconnected from MySQL database
+2025-04-29 01:22:40,333 - pr-export - INFO - Connected to MySQL database: github_prs
+2025-04-29 01:22:40,337 - pr-export - INFO - Found 7 PRs with AI reviews
+2025-04-29 01:22:40,359 - pr-export - INFO - Exported PR #127483 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127483.json
+2025-04-29 01:22:40,369 - pr-export - INFO - Exported PR #127488 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127488.json
+2025-04-29 01:22:40,379 - pr-export - INFO - Exported PR #124708 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR124708.json
+2025-04-29 01:22:40,395 - pr-export - INFO - Exported PR #126739 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR126739.json
+2025-04-29 01:22:40,409 - pr-export - INFO - Exported PR #126786 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR126786.json
+2025-04-29 01:22:40,416 - pr-export - INFO - Exported PR #127487 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127487.json
+2025-04-29 01:22:40,425 - pr-export - INFO - Exported PR #127454 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127454.json
+2025-04-29 01:22:40,426 - pr-export - INFO - Exported 7 PRs to JSON files in /app/exported_prs
+2025-04-29 01:22:40,428 - pr-export - INFO - Disconnected from MySQL database
+2025-04-29 01:28:00,933 - pr-export - INFO - Connected to MySQL database: github_prs
+2025-04-29 01:28:00,938 - pr-export - INFO - Found 7 PRs with AI reviews
+2025-04-29 01:28:00,960 - pr-export - INFO - Exported PR #127483 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127483.json
+2025-04-29 01:28:00,974 - pr-export - INFO - Exported PR #127488 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127488.json
+2025-04-29 01:28:00,987 - pr-export - INFO - Exported PR #124708 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR124708.json
+2025-04-29 01:28:01,001 - pr-export - INFO - Exported PR #126739 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR126739.json
+2025-04-29 01:28:01,020 - pr-export - INFO - Exported PR #126786 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR126786.json
+2025-04-29 01:28:01,030 - pr-export - INFO - Exported PR #127487 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127487.json
+2025-04-29 01:28:01,039 - pr-export - INFO - Exported PR #127454 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127454.json
+2025-04-29 01:28:01,040 - pr-export - INFO - Exported 7 PRs to JSON files in /app/exported_prs
+2025-04-29 01:28:01,043 - pr-export - INFO - Disconnected from MySQL database
+2025-04-29 01:33:21,729 - pr-export - INFO - Connected to MySQL database: github_prs
+2025-04-29 01:33:21,735 - pr-export - INFO - Found 10 PRs with AI reviews
+2025-04-29 01:33:21,752 - pr-export - INFO - Exported PR #126739 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR126739.json
+2025-04-29 01:33:21,764 - pr-export - INFO - Exported PR #124708 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR124708.json
+2025-04-29 01:33:21,784 - pr-export - INFO - Exported PR #127483 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127483.json
+2025-04-29 01:33:21,796 - pr-export - INFO - Exported PR #127488 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127488.json
+2025-04-29 01:33:21,814 - pr-export - INFO - Exported PR #126786 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR126786.json
+2025-04-29 01:33:21,826 - pr-export - INFO - Exported PR #127487 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127487.json
+2025-04-29 01:33:21,837 - pr-export - INFO - Exported PR #127454 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127454.json
+2025-04-29 01:33:21,851 - pr-export - INFO - Exported PR #127458 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127458.json
+2025-04-29 01:33:21,862 - pr-export - INFO - Exported PR #127486 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127486.json
+2025-04-29 01:33:21,875 - pr-export - INFO - Exported PR #127480 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127480.json
+2025-04-29 01:33:21,876 - pr-export - INFO - Exported 10 PRs to JSON files in /app/exported_prs
+2025-04-29 01:33:21,879 - pr-export - INFO - Disconnected from MySQL database
+2025-04-29 01:38:42,654 - pr-export - INFO - Connected to MySQL database: github_prs
+2025-04-29 01:38:43,389 - pr-export - INFO - Found 10 PRs with AI reviews
+2025-04-29 01:38:43,406 - pr-export - INFO - Exported PR #126739 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR126739.json
+2025-04-29 01:38:43,417 - pr-export - INFO - Exported PR #124708 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR124708.json
+2025-04-29 01:38:43,438 - pr-export - INFO - Exported PR #127483 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127483.json
+2025-04-29 01:38:43,450 - pr-export - INFO - Exported PR #127488 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127488.json
+2025-04-29 01:38:43,465 - pr-export - INFO - Exported PR #126786 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR126786.json
+2025-04-29 01:38:43,473 - pr-export - INFO - Exported PR #127487 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127487.json
+2025-04-29 01:38:43,483 - pr-export - INFO - Exported PR #127454 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127454.json
+2025-04-29 01:38:43,497 - pr-export - INFO - Exported PR #127458 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127458.json
+2025-04-29 01:38:43,506 - pr-export - INFO - Exported PR #127486 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127486.json
+2025-04-29 01:38:43,514 - pr-export - INFO - Exported PR #127480 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127480.json
+2025-04-29 01:38:43,515 - pr-export - INFO - Exported 10 PRs to JSON files in /app/exported_prs
+2025-04-29 01:38:43,517 - pr-export - INFO - Disconnected from MySQL database
+2025-04-29 01:44:05,921 - pr-export - INFO - Connected to MySQL database: github_prs
+2025-04-29 01:44:05,926 - pr-export - INFO - Found 10 PRs with AI reviews
+2025-04-29 01:44:05,940 - pr-export - INFO - Exported PR #126739 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR126739.json
+2025-04-29 01:44:05,950 - pr-export - INFO - Exported PR #124708 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR124708.json
+2025-04-29 01:44:05,968 - pr-export - INFO - Exported PR #127483 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127483.json
+2025-04-29 01:44:05,979 - pr-export - INFO - Exported PR #127488 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127488.json
+2025-04-29 01:44:05,993 - pr-export - INFO - Exported PR #126786 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR126786.json
+2025-04-29 01:44:06,002 - pr-export - INFO - Exported PR #127487 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127487.json
+2025-04-29 01:44:06,010 - pr-export - INFO - Exported PR #127454 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127454.json
+2025-04-29 01:44:06,021 - pr-export - INFO - Exported PR #127458 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127458.json
+2025-04-29 01:44:06,030 - pr-export - INFO - Exported PR #127486 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127486.json
+2025-04-29 01:44:06,037 - pr-export - INFO - Exported PR #127480 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127480.json
+2025-04-29 01:44:06,038 - pr-export - INFO - Exported 10 PRs to JSON files in /app/exported_prs
+2025-04-29 01:44:06,039 - pr-export - INFO - Disconnected from MySQL database
+2025-04-29 01:49:27,235 - pr-export - INFO - Connected to MySQL database: github_prs
+2025-04-29 01:49:27,240 - pr-export - INFO - Found 10 PRs with AI reviews
+2025-04-29 01:49:27,263 - pr-export - INFO - Exported PR #126739 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR126739.json
+2025-04-29 01:49:27,278 - pr-export - INFO - Exported PR #124708 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR124708.json
+2025-04-29 01:49:27,302 - pr-export - INFO - Exported PR #127483 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127483.json
+2025-04-29 01:49:27,317 - pr-export - INFO - Exported PR #127488 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127488.json
+2025-04-29 01:49:27,340 - pr-export - INFO - Exported PR #126786 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR126786.json
+2025-04-29 01:49:27,353 - pr-export - INFO - Exported PR #127487 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127487.json
+2025-04-29 01:49:27,367 - pr-export - INFO - Exported PR #127454 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127454.json
+2025-04-29 01:49:27,384 - pr-export - INFO - Exported PR #127458 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127458.json
+2025-04-29 01:49:27,398 - pr-export - INFO - Exported PR #127486 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127486.json
+2025-04-29 01:49:27,410 - pr-export - INFO - Exported PR #127480 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127480.json
+2025-04-29 01:49:27,411 - pr-export - INFO - Exported 10 PRs to JSON files in /app/exported_prs
+2025-04-29 01:49:27,413 - pr-export - INFO - Disconnected from MySQL database
+2025-04-29 01:51:11,607 - pr-export - INFO - Connected to MySQL database: github_prs
+2025-04-29 01:51:11,613 - pr-export - INFO - Found 10 PRs with AI reviews
+2025-04-29 01:51:11,634 - pr-export - INFO - Exported PR #126739 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR126739.json
+2025-04-29 01:51:11,647 - pr-export - INFO - Exported PR #124708 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR124708.json
+2025-04-29 01:51:11,669 - pr-export - INFO - Exported PR #127483 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127483.json
+2025-04-29 01:51:11,681 - pr-export - INFO - Exported PR #127488 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127488.json
+2025-04-29 01:51:11,702 - pr-export - INFO - Exported PR #126786 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR126786.json
+2025-04-29 01:51:11,712 - pr-export - INFO - Exported PR #127487 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127487.json
+2025-04-29 01:51:11,721 - pr-export - INFO - Exported PR #127454 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127454.json
+2025-04-29 01:51:11,732 - pr-export - INFO - Exported PR #127458 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127458.json
+2025-04-29 01:51:11,741 - pr-export - INFO - Exported PR #127486 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127486.json
+2025-04-29 01:51:11,750 - pr-export - INFO - Exported PR #127480 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127480.json
+2025-04-29 01:51:11,750 - pr-export - INFO - Exported 10 PRs to JSON files in /app/exported_prs
+2025-04-29 01:51:11,752 - pr-export - INFO - Disconnected from MySQL database
+2025-04-29 01:52:48,360 - pr-export - INFO - Connected to MySQL database: github_prs
+2025-04-29 01:52:48,364 - pr-export - INFO - Found 10 PRs with AI reviews
+2025-04-29 01:52:48,384 - pr-export - INFO - Exported PR #126739 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR126739.json
+2025-04-29 01:52:48,399 - pr-export - INFO - Exported PR #124708 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR124708.json
+2025-04-29 01:52:48,426 - pr-export - INFO - Exported PR #127483 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127483.json
+2025-04-29 01:52:48,444 - pr-export - INFO - Exported PR #127488 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127488.json
+2025-04-29 01:52:48,465 - pr-export - INFO - Exported PR #126786 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR126786.json
+2025-04-29 01:52:48,478 - pr-export - INFO - Exported PR #127487 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127487.json
+2025-04-29 01:52:48,492 - pr-export - INFO - Exported PR #127454 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127454.json
+2025-04-29 01:52:48,506 - pr-export - INFO - Exported PR #127458 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127458.json
+2025-04-29 01:52:48,520 - pr-export - INFO - Exported PR #127486 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127486.json
+2025-04-29 01:52:48,531 - pr-export - INFO - Exported PR #127480 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127480.json
+2025-04-29 01:52:48,532 - pr-export - INFO - Exported 10 PRs to JSON files in /app/exported_prs
+2025-04-29 01:52:48,535 - pr-export - INFO - Disconnected from MySQL database
+2025-04-29 01:53:41,291 - pr-export - INFO - Connected to MySQL database: github_prs
+2025-04-29 01:53:41,296 - pr-export - INFO - Found 10 PRs with AI reviews
+2025-04-29 01:53:41,319 - pr-export - INFO - Exported PR #126739 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR126739.json
+2025-04-29 01:53:41,339 - pr-export - INFO - Exported PR #124708 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR124708.json
+2025-04-29 01:53:41,370 - pr-export - INFO - Exported PR #127483 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127483.json
+2025-04-29 01:53:42,105 - pr-export - INFO - Exported PR #127488 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127488.json
+2025-04-29 01:53:42,141 - pr-export - INFO - Exported PR #126786 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR126786.json
+2025-04-29 01:53:42,158 - pr-export - INFO - Exported PR #127487 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127487.json
+2025-04-29 01:53:42,178 - pr-export - INFO - Exported PR #127454 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127454.json
+2025-04-29 01:53:42,203 - pr-export - INFO - Exported PR #127458 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127458.json
+2025-04-29 01:53:42,226 - pr-export - INFO - Exported PR #127486 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127486.json
+2025-04-29 01:53:42,243 - pr-export - INFO - Exported PR #127480 from elastic/elasticsearch to /app/exported_prs/elastic_elasticsearch_PR127480.json
+2025-04-29 01:53:42,244 - pr-export - INFO - Exported 10 PRs to JSON files in /app/exported_prs
+2025-04-29 01:53:42,249 - pr-export - INFO - Disconnected from MySQL database
+2025-04-29 02:00:35,877 - pr-export - ERROR - Error connecting to MySQL database: 2003 (HY000): Can't connect to MySQL server on 'mysql:3306' (111)
+2025-04-29 02:03:45,409 - pr-export - ERROR - Error connecting to MySQL database: 2003 (HY000): Can't connect to MySQL server on 'mysql:3306' (111)
+2025-04-29 02:09:07,109 - pr-export - INFO - Connected to MySQL database: github_prs
+2025-04-29 02:09:07,112 - pr-export - INFO - Found 1 PRs with AI reviews
+2025-04-29 02:09:07,130 - pr-export - INFO - Exported PR #448 from casid/jte to /app/exported_prs/casid_jte_PR448.json
+2025-04-29 02:09:07,131 - pr-export - INFO - Exported 1 PRs to JSON files in /app/exported_prs
+2025-04-29 02:09:07,133 - pr-export - INFO - Disconnected from MySQL database
+2025-04-29 02:14:29,025 - pr-export - INFO - Connected to MySQL database: github_prs
+2025-04-29 02:14:29,028 - pr-export - INFO - Found 2 PRs with AI reviews
+2025-04-29 02:14:29,040 - pr-export - INFO - Exported PR #448 from casid/jte to /app/exported_prs/casid_jte_PR448.json
+2025-04-29 02:14:29,051 - pr-export - INFO - Exported PR #450 from casid/jte to /app/exported_prs/casid_jte_PR450.json
+2025-04-29 02:14:29,052 - pr-export - INFO - Exported 2 PRs to JSON files in /app/exported_prs
+2025-04-29 02:14:29,053 - pr-export - INFO - Disconnected from MySQL database
+2025-04-29 03:51:07,378 - pr-export - INFO - Connected to MySQL database: github_prs
+2025-04-29 03:51:07,382 - pr-export - INFO - Found 2 PRs with AI reviews
+2025-04-29 03:51:07,397 - pr-export - INFO - Exported PR #448 from casid/jte to /app/exported_prs/casid_jte_PR448.json
+2025-04-29 03:51:07,409 - pr-export - INFO - Exported PR #450 from casid/jte to /app/exported_prs/casid_jte_PR450.json
+2025-04-29 03:51:07,410 - pr-export - INFO - Exported 2 PRs to JSON files in /app/exported_prs
+2025-04-29 03:51:07,412 - pr-export - INFO - Disconnected from MySQL database
+2025-04-29 03:56:30,672 - pr-export - INFO - Connected to MySQL database: github_prs
+2025-04-29 03:56:30,675 - pr-export - INFO - Found 2 PRs with AI reviews
+2025-04-29 03:56:30,690 - pr-export - INFO - Exported PR #448 from casid/jte to /app/exported_prs/casid_jte_PR448.json
+2025-04-29 03:56:30,706 - pr-export - INFO - Exported PR #450 from casid/jte to /app/exported_prs/casid_jte_PR450.json
+2025-04-29 03:56:30,706 - pr-export - INFO - Exported 2 PRs to JSON files in /app/exported_prs
+2025-04-29 03:56:30,708 - pr-export - INFO - Disconnected from MySQL database
+2025-04-29 04:01:52,254 - pr-export - INFO - Connected to MySQL database: github_prs
+2025-04-29 04:01:52,256 - pr-export - INFO - Found 2 PRs with AI reviews
+2025-04-29 04:01:52,269 - pr-export - INFO - Exported PR #448 from casid/jte to /app/exported_prs/casid_jte_PR448.json
+2025-04-29 04:01:52,277 - pr-export - INFO - Exported PR #450 from casid/jte to /app/exported_prs/casid_jte_PR450.json
+2025-04-29 04:01:52,277 - pr-export - INFO - Exported 2 PRs to JSON files in /app/exported_prs
+2025-04-29 04:01:52,279 - pr-export - INFO - Disconnected from MySQL database
+2025-04-29 04:05:43,308 - pr-export - INFO - Connected to MySQL database: github_prs
+2025-04-29 04:05:43,313 - pr-export - INFO - Found 2 PRs with AI reviews
+2025-04-29 04:05:43,334 - pr-export - INFO - Exported PR #448 from casid/jte to /app/exported_prs/casid_jte_PR448.json
+2025-04-29 04:05:43,347 - pr-export - INFO - Exported PR #450 from casid/jte to /app/exported_prs/casid_jte_PR450.json
+2025-04-29 04:05:43,347 - pr-export - INFO - Exported 2 PRs to JSON files in /app/exported_prs
+2025-04-29 04:05:43,350 - pr-export - INFO - Disconnected from MySQL database

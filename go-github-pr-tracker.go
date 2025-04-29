@@ -285,7 +285,7 @@ func loadConfig() Config {
 		FetchSinceDays:   getIntEnv("FETCH_SINCE_DAYS", 30),
 		Concurrency:      getIntEnv("CONCURRENCY", 3),              // Default to 3 concurrent workers
 		RateLimitPerHour: getFloatEnv("RATE_LIMIT_PER_HOUR", 5000), // Default to GitHub's standard 5000 req/hour
-		MaxPRsToProcess:  getIntEnv("MAX_PRS_PER_REPO", 50),        // Default to 50 PRs per repo
+		MaxPRsToProcess:  getIntEnv("MAX_PRS_PER_REPO", 100),        // Default to 50 PRs per repo
 	}
 }
 

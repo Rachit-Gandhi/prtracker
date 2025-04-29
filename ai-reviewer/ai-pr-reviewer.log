@@ -5,3 +5,380 @@
 2025-04-29 00:51:57,626 - ai-pr-reviewer - INFO - Found 0 PRs to review
 2025-04-29 00:51:57,626 - ai-pr-reviewer - WARNING - No PRs found for review. Check if PRs have been fetched.
 2025-04-29 00:51:57,628 - ai-pr-reviewer - INFO - Disconnected from MySQL database
+2025-04-29 01:04:04,721 - ai-pr-reviewer - INFO - Connected to MySQL database: github_prs
+2025-04-29 01:04:04,738 - ai-pr-reviewer - INFO - Exported PR diagnostics to pr_diagnostics.txt
+2025-04-29 01:04:04,746 - ai-pr-reviewer - INFO - Review tables created or verified
+2025-04-29 01:04:04,748 - ai-pr-reviewer - INFO - Found 10 PRs for review (ignoring previous filters)
+2025-04-29 01:04:04,748 - ai-pr-reviewer - INFO - Found 10 PRs to review
+2025-04-29 01:04:04,751 - ai-pr-reviewer - INFO - Exported list of PRs to be reviewed to prs_to_review.txt
+2025-04-29 01:04:04,752 - ai-pr-reviewer - INFO - Reviewing PR #127483 in elastic/elasticsearch: Add tests for block loaders of multifields
+2025-04-29 01:04:08,732 - ai-pr-reviewer - INFO - Generated PR summary
+2025-04-29 01:04:13,260 - ai-pr-reviewer - INFO - Generated review for modules/mapper-extras/src/main/java/org/elasticsearch/index/mapper/extras/ScaledFloatFieldMapper.java
+2025-04-29 01:04:17,493 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/mapper/BooleanFieldMapper.java
+2025-04-29 01:04:23,729 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/mapper/DateFieldMapper.java
+2025-04-29 01:04:29,250 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/mapper/GeoPointFieldMapper.java
+2025-04-29 01:04:38,315 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/mapper/IpFieldMapper.java
+2025-04-29 01:04:46,716 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/mapper/KeywordFieldMapper.java
+2025-04-29 01:04:50,869 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/mapper/NumberFieldMapper.java
+2025-04-29 01:04:59,682 - ai-pr-reviewer - INFO - Generated review for server/src/test/java/org/elasticsearch/index/mapper/blockloader/GeoPointFieldBlockLoaderTests.java
+2025-04-29 01:05:12,100 - ai-pr-reviewer - INFO - Generated review for server/src/test/java/org/elasticsearch/index/mapper/blockloader/TextFieldWithParentBlockLoaderTests.java
+2025-04-29 01:05:17,872 - ai-pr-reviewer - INFO - Generated review for test/framework/src/main/java/org/elasticsearch/datageneration/datasource/DataSourceRequest.java
+2025-04-29 01:05:29,692 - ai-pr-reviewer - INFO - Generated review for test/framework/src/main/java/org/elasticsearch/datageneration/datasource/DefaultMappingParametersHandler.java
+2025-04-29 01:05:33,756 - ai-pr-reviewer - INFO - Generated review for test/framework/src/main/java/org/elasticsearch/datageneration/MappingGenerator.java
+2025-04-29 01:05:43,516 - ai-pr-reviewer - INFO - Generated review for test/framework/src/main/java/org/elasticsearch/index/mapper/BlockLoaderTestCase.java
+2025-04-29 01:05:50,451 - ai-pr-reviewer - INFO - Generated review for test/framework/src/main/java/org/elasticsearch/index/mapper/BlockLoaderTestRunner.java
+2025-04-29 01:05:58,785 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/mapper-aggregate-metric/src/test/java/org/elasticsearch/xpack/aggregatemetric/mapper/AggregateMetricDoubleFieldBlockLoaderTests.java
+2025-04-29 01:06:06,349 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/mapper-constant-keyword/src/test/java/org/elasticsearch/xpack/constantkeyword/mapper/ConstantKeywordFieldBlockLoaderTests.java
+2025-04-29 01:06:15,245 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/mapper-unsigned-long/src/main/java/org/elasticsearch/xpack/unsignedlong/UnsignedLongFieldMapper.java
+2025-04-29 01:06:21,167 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/spatial/src/main/java/org/elasticsearch/xpack/spatial/index/mapper/GeoShapeWithDocValuesFieldMapper.java
+2025-04-29 01:06:28,660 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/spatial/src/main/java/org/elasticsearch/xpack/spatial/index/mapper/ShapeFieldMapper.java
+2025-04-29 01:06:35,685 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/spatial/src/test/java/org/elasticsearch/xpack/spatial/index/mapper/GeoShapeFieldBlockLoaderTests.java
+2025-04-29 01:06:41,026 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/spatial/src/test/java/org/elasticsearch/xpack/spatial/index/mapper/PointFieldBlockLoaderTests.java
+2025-04-29 01:06:50,455 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/spatial/src/test/java/org/elasticsearch/xpack/spatial/index/mapper/ShapeFieldBlockLoaderTests.java
+2025-04-29 01:06:50,508 - ai-pr-reviewer - INFO - Stored review for PR #127483 in elastic/elasticsearch, review ID: 1
+2025-04-29 01:06:50,518 - ai-pr-reviewer - INFO - Stored review 1 for PR #127483
+2025-04-29 01:06:50,526 - ai-pr-reviewer - INFO - Exported review to reviews/elastic-elasticsearch/PR-127483.md
+2025-04-29 01:06:51,528 - ai-pr-reviewer - INFO - Reviewing PR #127488 in elastic/elasticsearch: Enable time-series block hash
+2025-04-29 01:06:55,653 - ai-pr-reviewer - INFO - Generated PR summary
+2025-04-29 01:07:03,910 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/esql/compute/src/main/java/org/elasticsearch/compute/aggregation/blockhash/TimeSeriesBlockHash.java
+2025-04-29 01:07:08,837 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/esql/compute/src/main/java/org/elasticsearch/compute/data/OrdinalBytesRefBlock.java
+2025-04-29 01:07:17,816 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/esql/compute/src/main/java/org/elasticsearch/compute/operator/TimeSeriesAggregationOperator.java
+2025-04-29 01:07:25,872 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/esql/src/main/java/org/elasticsearch/xpack/esql/planner/AbstractPhysicalOperationProviders.java
+2025-04-29 01:07:33,626 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/esql/src/main/java/org/elasticsearch/xpack/esql/planner/EsPhysicalOperationProviders.java
+2025-04-29 01:07:42,354 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/esql/src/main/java/org/elasticsearch/xpack/esql/planner/PlannerUtils.java
+2025-04-29 01:07:52,020 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/esql/src/test/java/org/elasticsearch/xpack/esql/planner/TestPhysicalOperationProviders.java
+2025-04-29 01:07:52,046 - ai-pr-reviewer - INFO - Stored review for PR #127488 in elastic/elasticsearch, review ID: 2
+2025-04-29 01:07:52,055 - ai-pr-reviewer - INFO - Stored review 2 for PR #127488
+2025-04-29 01:07:52,064 - ai-pr-reviewer - INFO - Exported review to reviews/elastic-elasticsearch/PR-127488.md
+2025-04-29 01:07:53,065 - ai-pr-reviewer - INFO - Reviewing PR #124708 in elastic/elasticsearch: Throw exception for unknown token in RestIndexPutAliasAction
+2025-04-29 01:07:59,064 - ai-pr-reviewer - INFO - Generated PR summary
+2025-04-29 01:07:59,710 - ai-pr-reviewer - INFO - Generated review for docs/changelog/124708.yaml
+2025-04-29 01:08:07,449 - ai-pr-reviewer - INFO - Generated review for rest-api-spec/src/yamlRestTest/resources/rest-api-spec/test/indices.put_alias/10_basic.yml
+2025-04-29 01:08:13,403 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/IndexFeatures.java
+2025-04-29 01:08:20,395 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/rest/action/admin/indices/RestIndexPutAliasAction.java
+2025-04-29 01:08:25,573 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/esql/qa/security/src/javaRestTest/java/org/elasticsearch/xpack/esql/EsqlSecurityIT.java
+2025-04-29 01:08:30,537 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/security/qa/multi-cluster/src/javaRestTest/java/org/elasticsearch/xpack/remotecluster/RemoteClusterSecurityDataStreamEsqlRcs1IT.java
+2025-04-29 01:08:30,564 - ai-pr-reviewer - INFO - Stored review for PR #124708 in elastic/elasticsearch, review ID: 3
+2025-04-29 01:08:30,572 - ai-pr-reviewer - INFO - Stored review 3 for PR #124708
+2025-04-29 01:08:30,584 - ai-pr-reviewer - INFO - Exported review to reviews/elastic-elasticsearch/PR-124708.md
+2025-04-29 01:08:31,586 - ai-pr-reviewer - INFO - Reviewing PR #126739 in elastic/elasticsearch: Update sparse_vector field mapping to include default setting for token pruning
+2025-04-29 01:08:34,643 - ai-pr-reviewer - INFO - Generated PR summary
+2025-04-29 01:08:35,366 - ai-pr-reviewer - INFO - Generated review for docs/changelog/126739.yaml
+2025-04-29 01:08:40,443 - ai-pr-reviewer - INFO - Generated review for docs/reference/elasticsearch/mapping-reference/sparse-vector.md
+2025-04-29 01:08:46,083 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/IndexVersions.java
+2025-04-29 01:08:59,805 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/mapper/vectors/SparseVectorFieldMapper.java
+2025-04-29 01:09:03,674 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/TransportVersions.java
+2025-04-29 01:09:11,212 - ai-pr-reviewer - INFO - Generated review for server/src/test/java/org/elasticsearch/index/mapper/vectors/SparseVectorFieldMapperTests.java
+2025-04-29 01:09:26,180 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/core/src/main/java/org/elasticsearch/xpack/core/ml/search/SparseVectorQueryBuilder.java
+2025-04-29 01:09:37,680 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/core/src/test/java/org/elasticsearch/xpack/core/ml/search/SparseVectorQueryBuilderTests.java
+2025-04-29 01:09:37,702 - ai-pr-reviewer - INFO - Stored review for PR #126739 in elastic/elasticsearch, review ID: 4
+2025-04-29 01:09:37,711 - ai-pr-reviewer - INFO - Stored review 4 for PR #126739
+2025-04-29 01:09:37,720 - ai-pr-reviewer - INFO - Exported review to reviews/elastic-elasticsearch/PR-126739.md
+2025-04-29 01:09:38,721 - ai-pr-reviewer - INFO - Reviewing PR #126786 in elastic/elasticsearch: Account for time taken to write index buffers in IndexingMemoryController
+2025-04-29 01:09:44,422 - ai-pr-reviewer - INFO - Generated PR summary
+2025-04-29 01:09:49,690 - ai-pr-reviewer - INFO - Generated review for .idea/eclipseCodeFormatter.xml
+2025-04-29 01:09:56,953 - ai-pr-reviewer - INFO - Generated review for .idea/externalDependencies.xml
+2025-04-29 01:10:00,458 - ai-pr-reviewer - INFO - Generated review for .idea/inspectionProfiles/Project_Default.xml
+2025-04-29 01:10:04,606 - ai-pr-reviewer - INFO - Generated review for .idea/runConfigurations/Debug_Elasticsearch__node_2_.xml
+2025-04-29 01:10:08,145 - ai-pr-reviewer - INFO - Generated review for .idea/runConfigurations/Debug_Elasticsearch__node_3_.xml
+2025-04-29 01:10:11,952 - ai-pr-reviewer - INFO - Generated review for .idea/runConfigurations/Debug_Elasticsearch.xml
+2025-04-29 01:10:15,419 - ai-pr-reviewer - INFO - Generated review for .idea/scopes/llrc.xml
+2025-04-29 01:10:20,098 - ai-pr-reviewer - INFO - Generated review for .idea/scopes/Production_minus_fixtures.xml
+2025-04-29 01:10:27,357 - ai-pr-reviewer - INFO - Generated review for .idea/scopes/x_pack.xml
+2025-04-29 01:10:27,916 - ai-pr-reviewer - INFO - Generated review for docs/changelog/126786.yaml
+2025-04-29 01:10:33,981 - ai-pr-reviewer - INFO - Generated review for modules/data-streams/src/internalClusterTest/java/org/elasticsearch/datastreams/DataStreamAutoshardingIT.java
+2025-04-29 01:10:40,348 - ai-pr-reviewer - INFO - Generated review for server/src/internalClusterTest/java/org/elasticsearch/indices/IndexingMemoryControllerIT.java
+2025-04-29 01:10:47,789 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/shard/IndexingStats.java
+2025-04-29 01:10:55,768 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/shard/IndexShard.java
+2025-04-29 01:11:05,536 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/shard/InternalIndexingStats.java
+2025-04-29 01:11:12,534 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/indices/IndexingMemoryController.java
+2025-04-29 01:11:16,328 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/TransportVersions.java
+2025-04-29 01:11:23,219 - ai-pr-reviewer - INFO - Generated review for server/src/test/java/org/elasticsearch/action/admin/cluster/node/stats/NodeStatsTests.java
+2025-04-29 01:11:26,648 - ai-pr-reviewer - INFO - Generated review for server/src/test/java/org/elasticsearch/action/datastreams/autosharding/DataStreamAutoShardingServiceTests.java
+2025-04-29 01:11:32,436 - ai-pr-reviewer - INFO - Generated review for server/src/test/java/org/elasticsearch/cluster/metadata/IndexMetadataStatsTests.java
+2025-04-29 01:11:38,393 - ai-pr-reviewer - INFO - Generated review for server/src/test/java/org/elasticsearch/index/shard/IndexingStatsTests.java
+2025-04-29 01:11:43,471 - ai-pr-reviewer - INFO - Generated review for server/src/test/java/org/elasticsearch/rest/action/cat/RestShardsActionTests.java
+2025-04-29 01:11:47,672 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/monitoring/src/test/java/org/elasticsearch/xpack/monitoring/collector/indices/IndexStatsMonitoringDocTests.java
+2025-04-29 01:11:52,884 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/monitoring/src/test/java/org/elasticsearch/xpack/monitoring/collector/indices/IndicesStatsMonitoringDocTests.java
+2025-04-29 01:11:56,975 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/monitoring/src/test/java/org/elasticsearch/xpack/monitoring/collector/node/NodeStatsMonitoringDocTests.java
+2025-04-29 01:11:57,011 - ai-pr-reviewer - INFO - Stored review for PR #126786 in elastic/elasticsearch, review ID: 5
+2025-04-29 01:11:57,019 - ai-pr-reviewer - INFO - Stored review 5 for PR #126786
+2025-04-29 01:11:57,029 - ai-pr-reviewer - INFO - Exported review to reviews/elastic-elasticsearch/PR-126786.md
+2025-04-29 01:11:58,031 - ai-pr-reviewer - INFO - Reviewing PR #127487 in elastic/elasticsearch: handle retries for rate-limited non-streaming requests to the Elastic Inference Service
+2025-04-29 01:12:04,462 - ai-pr-reviewer - INFO - Generated PR summary
+2025-04-29 01:12:12,643 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/inference/src/main/java/org/elasticsearch/xpack/inference/services/elastic/ElasticInferenceServiceResponseHandler.java
+2025-04-29 01:12:12,661 - ai-pr-reviewer - INFO - Stored review for PR #127487 in elastic/elasticsearch, review ID: 6
+2025-04-29 01:12:12,668 - ai-pr-reviewer - INFO - Stored review 6 for PR #127487
+2025-04-29 01:12:12,680 - ai-pr-reviewer - INFO - Exported review to reviews/elastic-elasticsearch/PR-127487.md
+2025-04-29 01:12:13,681 - ai-pr-reviewer - INFO - Reviewing PR #127454 in elastic/elasticsearch: Remove translog from javadoc for acquireHistoryRetentionLock
+2025-04-29 01:12:18,518 - ai-pr-reviewer - INFO - Generated PR summary
+2025-04-29 01:12:23,271 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/shard/IndexShard.java
+2025-04-29 01:12:23,286 - ai-pr-reviewer - INFO - Stored review for PR #127454 in elastic/elasticsearch, review ID: 7
+2025-04-29 01:12:23,293 - ai-pr-reviewer - INFO - Stored review 7 for PR #127454
+2025-04-29 01:12:23,301 - ai-pr-reviewer - INFO - Exported review to reviews/elastic-elasticsearch/PR-127454.md
+2025-04-29 01:12:24,302 - ai-pr-reviewer - INFO - Reviewing PR #127458 in elastic/elasticsearch: [Failure Store] Fix resolved alias retrieval for failure indices
+2025-04-29 01:12:29,050 - ai-pr-reviewer - INFO - Generated PR summary
+2025-04-29 01:12:37,944 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/action/admin/cluster/shards/TransportClusterSearchShardsAction.java
+2025-04-29 01:12:44,829 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/action/search/TransportSearchAction.java
+2025-04-29 01:12:54,440 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/cluster/metadata/IndexNameExpressionResolver.java
+2025-04-29 01:13:01,696 - ai-pr-reviewer - INFO - Generated review for server/src/test/java/org/elasticsearch/cluster/metadata/IndexNameExpressionResolverTests.java
+2025-04-29 01:15:36,238 - ai-pr-reviewer - INFO - Connected to MySQL database: github_prs
+2025-04-29 01:15:36,252 - ai-pr-reviewer - INFO - Exported PR diagnostics to pr_diagnostics.txt
+2025-04-29 01:15:36,260 - ai-pr-reviewer - INFO - Review tables created or verified
+2025-04-29 01:15:36,266 - ai-pr-reviewer - INFO - Found 10 PRs for review (ignoring previous filters)
+2025-04-29 01:15:36,266 - ai-pr-reviewer - INFO - Found 10 PRs to review
+2025-04-29 01:15:36,270 - ai-pr-reviewer - INFO - Exported list of PRs to be reviewed to prs_to_review.txt
+2025-04-29 01:15:36,270 - ai-pr-reviewer - INFO - Reviewing PR #127483 in elastic/elasticsearch: Add tests for block loaders of multifields
+2025-04-29 01:15:40,233 - ai-pr-reviewer - INFO - Generated PR summary
+2025-04-29 01:15:49,123 - ai-pr-reviewer - INFO - Generated review for modules/mapper-extras/src/main/java/org/elasticsearch/index/mapper/extras/ScaledFloatFieldMapper.java
+2025-04-29 01:15:55,253 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/mapper/BooleanFieldMapper.java
+2025-04-29 01:15:59,435 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/mapper/DateFieldMapper.java
+2025-04-29 01:16:05,581 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/mapper/GeoPointFieldMapper.java
+2025-04-29 01:16:11,009 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/mapper/IpFieldMapper.java
+2025-04-29 01:16:21,700 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/mapper/KeywordFieldMapper.java
+2025-04-29 01:16:26,734 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/mapper/NumberFieldMapper.java
+2025-04-29 01:16:35,372 - ai-pr-reviewer - INFO - Generated review for server/src/test/java/org/elasticsearch/index/mapper/blockloader/GeoPointFieldBlockLoaderTests.java
+2025-04-29 01:19:27,644 - ai-pr-reviewer - INFO - Connected to MySQL database: github_prs
+2025-04-29 01:19:27,657 - ai-pr-reviewer - INFO - Exported PR diagnostics to pr_diagnostics.txt
+2025-04-29 01:19:27,667 - ai-pr-reviewer - INFO - Review tables created or verified
+2025-04-29 01:19:27,671 - ai-pr-reviewer - INFO - Found 10 PRs for review (ignoring previous filters)
+2025-04-29 01:19:27,671 - ai-pr-reviewer - INFO - Found 10 PRs to review
+2025-04-29 01:19:27,675 - ai-pr-reviewer - INFO - Exported list of PRs to be reviewed to prs_to_review.txt
+2025-04-29 01:19:27,675 - ai-pr-reviewer - INFO - Reviewing PR #127483 in elastic/elasticsearch: Add tests for block loaders of multifields
+2025-04-29 01:19:33,561 - ai-pr-reviewer - INFO - Generated PR summary
+2025-04-29 01:19:43,301 - ai-pr-reviewer - INFO - Generated review for modules/mapper-extras/src/main/java/org/elasticsearch/index/mapper/extras/ScaledFloatFieldMapper.java
+2025-04-29 01:19:48,884 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/mapper/BooleanFieldMapper.java
+2025-04-29 01:19:54,143 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/mapper/DateFieldMapper.java
+2025-04-29 01:19:59,562 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/mapper/GeoPointFieldMapper.java
+2025-04-29 01:20:08,277 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/mapper/IpFieldMapper.java
+2025-04-29 01:20:15,510 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/mapper/KeywordFieldMapper.java
+2025-04-29 01:20:19,664 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/mapper/NumberFieldMapper.java
+2025-04-29 01:20:35,690 - ai-pr-reviewer - INFO - Generated review for server/src/test/java/org/elasticsearch/index/mapper/blockloader/GeoPointFieldBlockLoaderTests.java
+2025-04-29 01:20:45,756 - ai-pr-reviewer - INFO - Generated review for server/src/test/java/org/elasticsearch/index/mapper/blockloader/TextFieldWithParentBlockLoaderTests.java
+2025-04-29 01:20:53,224 - ai-pr-reviewer - INFO - Generated review for test/framework/src/main/java/org/elasticsearch/datageneration/datasource/DataSourceRequest.java
+2025-04-29 01:21:02,666 - ai-pr-reviewer - INFO - Generated review for test/framework/src/main/java/org/elasticsearch/datageneration/datasource/DefaultMappingParametersHandler.java
+2025-04-29 01:21:11,872 - ai-pr-reviewer - INFO - Generated review for test/framework/src/main/java/org/elasticsearch/datageneration/MappingGenerator.java
+2025-04-29 01:21:22,509 - ai-pr-reviewer - INFO - Generated review for test/framework/src/main/java/org/elasticsearch/index/mapper/BlockLoaderTestCase.java
+2025-04-29 01:21:32,257 - ai-pr-reviewer - INFO - Generated review for test/framework/src/main/java/org/elasticsearch/index/mapper/BlockLoaderTestRunner.java
+2025-04-29 01:21:41,147 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/mapper-aggregate-metric/src/test/java/org/elasticsearch/xpack/aggregatemetric/mapper/AggregateMetricDoubleFieldBlockLoaderTests.java
+2025-04-29 01:21:48,116 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/mapper-constant-keyword/src/test/java/org/elasticsearch/xpack/constantkeyword/mapper/ConstantKeywordFieldBlockLoaderTests.java
+2025-04-29 01:21:52,801 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/mapper-unsigned-long/src/main/java/org/elasticsearch/xpack/unsignedlong/UnsignedLongFieldMapper.java
+2025-04-29 01:21:59,359 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/spatial/src/main/java/org/elasticsearch/xpack/spatial/index/mapper/GeoShapeWithDocValuesFieldMapper.java
+2025-04-29 01:22:05,400 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/spatial/src/main/java/org/elasticsearch/xpack/spatial/index/mapper/ShapeFieldMapper.java
+2025-04-29 01:22:14,123 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/spatial/src/test/java/org/elasticsearch/xpack/spatial/index/mapper/GeoShapeFieldBlockLoaderTests.java
+2025-04-29 01:22:18,435 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/spatial/src/test/java/org/elasticsearch/xpack/spatial/index/mapper/PointFieldBlockLoaderTests.java
+2025-04-29 01:22:26,676 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/spatial/src/test/java/org/elasticsearch/xpack/spatial/index/mapper/ShapeFieldBlockLoaderTests.java
+2025-04-29 01:22:26,723 - ai-pr-reviewer - INFO - Stored review for PR #127483 in elastic/elasticsearch, review ID: 8
+2025-04-29 01:22:26,731 - ai-pr-reviewer - INFO - Stored review 8 for PR #127483
+2025-04-29 01:22:26,738 - ai-pr-reviewer - INFO - Exported review to reviews/elastic-elasticsearch/PR-127483.md
+2025-04-29 01:22:27,739 - ai-pr-reviewer - INFO - Reviewing PR #127488 in elastic/elasticsearch: Enable time-series block hash
+2025-04-29 01:22:31,930 - ai-pr-reviewer - INFO - Generated PR summary
+2025-04-29 01:22:40,082 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/esql/compute/src/main/java/org/elasticsearch/compute/aggregation/blockhash/TimeSeriesBlockHash.java
+2025-04-29 01:22:48,863 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/esql/compute/src/main/java/org/elasticsearch/compute/data/OrdinalBytesRefBlock.java
+2025-04-29 01:22:55,314 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/esql/compute/src/main/java/org/elasticsearch/compute/operator/TimeSeriesAggregationOperator.java
+2025-04-29 01:23:03,741 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/esql/src/main/java/org/elasticsearch/xpack/esql/planner/AbstractPhysicalOperationProviders.java
+2025-04-29 01:23:11,255 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/esql/src/main/java/org/elasticsearch/xpack/esql/planner/EsPhysicalOperationProviders.java
+2025-04-29 01:23:18,916 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/esql/src/main/java/org/elasticsearch/xpack/esql/planner/PlannerUtils.java
+2025-04-29 01:23:28,123 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/esql/src/test/java/org/elasticsearch/xpack/esql/planner/TestPhysicalOperationProviders.java
+2025-04-29 01:23:28,142 - ai-pr-reviewer - INFO - Stored review for PR #127488 in elastic/elasticsearch, review ID: 9
+2025-04-29 01:23:28,149 - ai-pr-reviewer - INFO - Stored review 9 for PR #127488
+2025-04-29 01:23:28,155 - ai-pr-reviewer - INFO - Exported review to reviews/elastic-elasticsearch/PR-127488.md
+2025-04-29 01:23:29,156 - ai-pr-reviewer - INFO - Reviewing PR #124708 in elastic/elasticsearch: Throw exception for unknown token in RestIndexPutAliasAction
+2025-04-29 01:23:33,209 - ai-pr-reviewer - INFO - Generated PR summary
+2025-04-29 01:23:33,844 - ai-pr-reviewer - INFO - Generated review for docs/changelog/124708.yaml
+2025-04-29 01:23:40,483 - ai-pr-reviewer - INFO - Generated review for rest-api-spec/src/yamlRestTest/resources/rest-api-spec/test/indices.put_alias/10_basic.yml
+2025-04-29 01:23:49,151 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/IndexFeatures.java
+2025-04-29 01:23:55,794 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/rest/action/admin/indices/RestIndexPutAliasAction.java
+2025-04-29 01:24:01,491 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/esql/qa/security/src/javaRestTest/java/org/elasticsearch/xpack/esql/EsqlSecurityIT.java
+2025-04-29 01:24:08,390 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/security/qa/multi-cluster/src/javaRestTest/java/org/elasticsearch/xpack/remotecluster/RemoteClusterSecurityDataStreamEsqlRcs1IT.java
+2025-04-29 01:24:08,411 - ai-pr-reviewer - INFO - Stored review for PR #124708 in elastic/elasticsearch, review ID: 10
+2025-04-29 01:24:08,417 - ai-pr-reviewer - INFO - Stored review 10 for PR #124708
+2025-04-29 01:24:08,424 - ai-pr-reviewer - INFO - Exported review to reviews/elastic-elasticsearch/PR-124708.md
+2025-04-29 01:24:09,425 - ai-pr-reviewer - INFO - Reviewing PR #126739 in elastic/elasticsearch: Update sparse_vector field mapping to include default setting for token pruning
+2025-04-29 01:24:15,303 - ai-pr-reviewer - INFO - Generated PR summary
+2025-04-29 01:24:16,038 - ai-pr-reviewer - INFO - Generated review for docs/changelog/126739.yaml
+2025-04-29 01:24:24,245 - ai-pr-reviewer - INFO - Generated review for docs/reference/elasticsearch/mapping-reference/sparse-vector.md
+2025-04-29 01:24:31,473 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/IndexVersions.java
+2025-04-29 01:24:42,474 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/mapper/vectors/SparseVectorFieldMapper.java
+2025-04-29 01:24:46,327 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/TransportVersions.java
+2025-04-29 01:24:58,052 - ai-pr-reviewer - INFO - Generated review for server/src/test/java/org/elasticsearch/index/mapper/vectors/SparseVectorFieldMapperTests.java
+2025-04-29 01:25:06,337 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/core/src/main/java/org/elasticsearch/xpack/core/ml/search/SparseVectorQueryBuilder.java
+2025-04-29 01:25:15,888 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/core/src/test/java/org/elasticsearch/xpack/core/ml/search/SparseVectorQueryBuilderTests.java
+2025-04-29 01:25:15,909 - ai-pr-reviewer - INFO - Stored review for PR #126739 in elastic/elasticsearch, review ID: 11
+2025-04-29 01:25:15,915 - ai-pr-reviewer - INFO - Stored review 11 for PR #126739
+2025-04-29 01:25:15,924 - ai-pr-reviewer - INFO - Exported review to reviews/elastic-elasticsearch/PR-126739.md
+2025-04-29 01:25:16,925 - ai-pr-reviewer - INFO - Reviewing PR #126786 in elastic/elasticsearch: Account for time taken to write index buffers in IndexingMemoryController
+2025-04-29 01:25:20,156 - ai-pr-reviewer - INFO - Generated PR summary
+2025-04-29 01:25:28,541 - ai-pr-reviewer - INFO - Generated review for .idea/eclipseCodeFormatter.xml
+2025-04-29 01:25:36,919 - ai-pr-reviewer - INFO - Generated review for .idea/externalDependencies.xml
+2025-04-29 01:25:41,377 - ai-pr-reviewer - INFO - Generated review for .idea/inspectionProfiles/Project_Default.xml
+2025-04-29 01:25:44,947 - ai-pr-reviewer - INFO - Generated review for .idea/runConfigurations/Debug_Elasticsearch__node_2_.xml
+2025-04-29 01:25:49,017 - ai-pr-reviewer - INFO - Generated review for .idea/runConfigurations/Debug_Elasticsearch__node_3_.xml
+2025-04-29 01:25:59,393 - ai-pr-reviewer - INFO - Generated review for .idea/runConfigurations/Debug_Elasticsearch.xml
+2025-04-29 01:26:03,560 - ai-pr-reviewer - INFO - Generated review for .idea/scopes/llrc.xml
+2025-04-29 01:26:08,270 - ai-pr-reviewer - INFO - Generated review for .idea/scopes/Production_minus_fixtures.xml
+2025-04-29 01:26:12,933 - ai-pr-reviewer - INFO - Generated review for .idea/scopes/x_pack.xml
+2025-04-29 01:26:13,518 - ai-pr-reviewer - INFO - Generated review for docs/changelog/126786.yaml
+2025-04-29 01:26:17,697 - ai-pr-reviewer - INFO - Generated review for modules/data-streams/src/internalClusterTest/java/org/elasticsearch/datastreams/DataStreamAutoshardingIT.java
+2025-04-29 01:26:23,985 - ai-pr-reviewer - INFO - Generated review for server/src/internalClusterTest/java/org/elasticsearch/indices/IndexingMemoryControllerIT.java
+2025-04-29 01:26:32,726 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/shard/IndexingStats.java
+2025-04-29 01:26:41,534 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/shard/IndexShard.java
+2025-04-29 01:26:49,171 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/shard/InternalIndexingStats.java
+2025-04-29 01:26:55,975 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/indices/IndexingMemoryController.java
+2025-04-29 01:27:04,212 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/TransportVersions.java
+2025-04-29 01:27:11,721 - ai-pr-reviewer - INFO - Generated review for server/src/test/java/org/elasticsearch/action/admin/cluster/node/stats/NodeStatsTests.java
+2025-04-29 01:27:17,003 - ai-pr-reviewer - INFO - Generated review for server/src/test/java/org/elasticsearch/action/datastreams/autosharding/DataStreamAutoShardingServiceTests.java
+2025-04-29 01:27:22,155 - ai-pr-reviewer - INFO - Generated review for server/src/test/java/org/elasticsearch/cluster/metadata/IndexMetadataStatsTests.java
+2025-04-29 01:27:30,436 - ai-pr-reviewer - INFO - Generated review for server/src/test/java/org/elasticsearch/index/shard/IndexingStatsTests.java
+2025-04-29 01:27:38,378 - ai-pr-reviewer - INFO - Generated review for server/src/test/java/org/elasticsearch/rest/action/cat/RestShardsActionTests.java
+2025-04-29 01:27:43,900 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/monitoring/src/test/java/org/elasticsearch/xpack/monitoring/collector/indices/IndexStatsMonitoringDocTests.java
+2025-04-29 01:27:49,616 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/monitoring/src/test/java/org/elasticsearch/xpack/monitoring/collector/indices/IndicesStatsMonitoringDocTests.java
+2025-04-29 01:27:53,684 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/monitoring/src/test/java/org/elasticsearch/xpack/monitoring/collector/node/NodeStatsMonitoringDocTests.java
+2025-04-29 01:27:53,732 - ai-pr-reviewer - INFO - Stored review for PR #126786 in elastic/elasticsearch, review ID: 12
+2025-04-29 01:27:53,739 - ai-pr-reviewer - INFO - Stored review 12 for PR #126786
+2025-04-29 01:27:53,749 - ai-pr-reviewer - INFO - Exported review to reviews/elastic-elasticsearch/PR-126786.md
+2025-04-29 01:27:54,750 - ai-pr-reviewer - INFO - Reviewing PR #127487 in elastic/elasticsearch: handle retries for rate-limited non-streaming requests to the Elastic Inference Service
+2025-04-29 01:27:58,514 - ai-pr-reviewer - INFO - Generated PR summary
+2025-04-29 01:28:06,320 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/inference/src/main/java/org/elasticsearch/xpack/inference/services/elastic/ElasticInferenceServiceResponseHandler.java
+2025-04-29 01:28:06,331 - ai-pr-reviewer - INFO - Stored review for PR #127487 in elastic/elasticsearch, review ID: 13
+2025-04-29 01:28:06,337 - ai-pr-reviewer - INFO - Stored review 13 for PR #127487
+2025-04-29 01:28:06,347 - ai-pr-reviewer - INFO - Exported review to reviews/elastic-elasticsearch/PR-127487.md
+2025-04-29 01:28:07,349 - ai-pr-reviewer - INFO - Reviewing PR #127454 in elastic/elasticsearch: Remove translog from javadoc for acquireHistoryRetentionLock
+2025-04-29 01:28:11,486 - ai-pr-reviewer - INFO - Generated PR summary
+2025-04-29 01:28:16,262 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/shard/IndexShard.java
+2025-04-29 01:28:16,277 - ai-pr-reviewer - INFO - Stored review for PR #127454 in elastic/elasticsearch, review ID: 14
+2025-04-29 01:28:16,285 - ai-pr-reviewer - INFO - Stored review 14 for PR #127454
+2025-04-29 01:28:16,293 - ai-pr-reviewer - INFO - Exported review to reviews/elastic-elasticsearch/PR-127454.md
+2025-04-29 01:28:17,295 - ai-pr-reviewer - INFO - Reviewing PR #127458 in elastic/elasticsearch: [Failure Store] Fix resolved alias retrieval for failure indices
+2025-04-29 01:28:20,998 - ai-pr-reviewer - INFO - Generated PR summary
+2025-04-29 01:28:26,595 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/action/admin/cluster/shards/TransportClusterSearchShardsAction.java
+2025-04-29 01:28:36,704 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/action/search/TransportSearchAction.java
+2025-04-29 01:28:43,561 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/cluster/metadata/IndexNameExpressionResolver.java
+2025-04-29 01:28:53,274 - ai-pr-reviewer - INFO - Generated review for server/src/test/java/org/elasticsearch/cluster/metadata/IndexNameExpressionResolverTests.java
+2025-04-29 01:29:00,883 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/security/qa/security-trial/src/javaRestTest/java/org/elasticsearch/xpack/security/failurestore/FailureStoreSecurityRestIT.java
+2025-04-29 01:29:00,903 - ai-pr-reviewer - INFO - Stored review for PR #127458 in elastic/elasticsearch, review ID: 15
+2025-04-29 01:29:00,910 - ai-pr-reviewer - INFO - Stored review 15 for PR #127458
+2025-04-29 01:29:00,918 - ai-pr-reviewer - INFO - Exported review to reviews/elastic-elasticsearch/PR-127458.md
+2025-04-29 01:29:01,919 - ai-pr-reviewer - INFO - Reviewing PR #127486 in elastic/elasticsearch: [WIP] Generate a test dependencies file to support unit tests in entitlements
+2025-04-29 01:29:05,668 - ai-pr-reviewer - INFO - Generated PR summary
+2025-04-29 01:29:19,312 - ai-pr-reviewer - INFO - Generated review for build-tools/src/main/java/org/elasticsearch/gradle/plugin/BasePluginBuildPlugin.java
+2025-04-29 01:29:28,184 - ai-pr-reviewer - INFO - Generated review for build-tools/src/main/java/org/elasticsearch/gradle/plugin/GeneratePluginTestDependenciesTask.java
+2025-04-29 01:29:32,819 - ai-pr-reviewer - INFO - Generated review for build-tools/src/main/java/org/elasticsearch/gradle/plugin/PluginBuildPlugin.java
+2025-04-29 01:29:32,838 - ai-pr-reviewer - INFO - Stored review for PR #127486 in elastic/elasticsearch, review ID: 16
+2025-04-29 01:29:32,845 - ai-pr-reviewer - INFO - Stored review 16 for PR #127486
+2025-04-29 01:29:32,853 - ai-pr-reviewer - INFO - Exported review to reviews/elastic-elasticsearch/PR-127486.md
+2025-04-29 01:29:33,854 - ai-pr-reviewer - INFO - Reviewing PR #127480 in elastic/elasticsearch: Enable FAILURE_STORE feature flag for LogsIndexModeFullClusterRestartIT
+2025-04-29 01:29:41,951 - ai-pr-reviewer - INFO - Generated PR summary
+2025-04-29 01:29:45,702 - ai-pr-reviewer - INFO - Generated review for muted-tests.yml
+2025-04-29 01:29:51,965 - ai-pr-reviewer - INFO - Generated review for qa/full-cluster-restart/src/javaRestTest/java/org/elasticsearch/upgrades/LogsIndexModeFullClusterRestartIT.java
+2025-04-29 01:29:51,973 - ai-pr-reviewer - INFO - Stored review for PR #127480 in elastic/elasticsearch, review ID: 17
+2025-04-29 01:29:51,979 - ai-pr-reviewer - INFO - Stored review 17 for PR #127480
+2025-04-29 01:29:51,985 - ai-pr-reviewer - INFO - Exported review to reviews/elastic-elasticsearch/PR-127480.md
+2025-04-29 01:29:52,985 - ai-pr-reviewer - INFO - Reviewed 10 PRs
+2025-04-29 01:29:52,986 - ai-pr-reviewer - INFO - Disconnected from MySQL database
+2025-04-29 01:53:19,699 - ai-pr-reviewer - INFO - Connected to MySQL database: github_prs
+2025-04-29 01:53:19,709 - ai-pr-reviewer - INFO - Exported PR diagnostics to pr_diagnostics.txt
+2025-04-29 01:53:19,720 - ai-pr-reviewer - INFO - Review tables created or verified
+2025-04-29 01:53:19,723 - ai-pr-reviewer - INFO - Found 10 PRs for review (ignoring previous filters)
+2025-04-29 01:53:19,723 - ai-pr-reviewer - INFO - Found 10 PRs to review
+2025-04-29 01:53:19,728 - ai-pr-reviewer - INFO - Exported list of PRs to be reviewed to prs_to_review.txt
+2025-04-29 01:53:19,728 - ai-pr-reviewer - INFO - Reviewing PR #126739 in elastic/elasticsearch: Update sparse_vector field mapping to include default setting for token pruning
+2025-04-29 01:53:23,854 - ai-pr-reviewer - INFO - Generated PR summary
+2025-04-29 01:53:29,214 - ai-pr-reviewer - INFO - Generated review for docs/reference/elasticsearch/mapping-reference/sparse-vector.md
+2025-04-29 01:53:34,259 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/IndexVersions.java
+2025-04-29 01:53:43,852 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/mapper/vectors/SparseVectorFieldMapper.java
+2025-04-29 01:53:47,882 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/TransportVersions.java
+2025-04-29 01:53:56,483 - ai-pr-reviewer - INFO - Generated review for server/src/test/java/org/elasticsearch/index/mapper/vectors/SparseVectorFieldMapperTests.java
+2025-04-29 01:54:06,085 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/core/src/main/java/org/elasticsearch/xpack/core/ml/search/SparseVectorQueryBuilder.java
+2025-04-29 01:54:12,758 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/core/src/test/java/org/elasticsearch/xpack/core/ml/search/SparseVectorQueryBuilderTests.java
+2025-04-29 01:54:12,794 - ai-pr-reviewer - INFO - Stored review for PR #126739 in elastic/elasticsearch, review ID: 18
+2025-04-29 01:54:12,806 - ai-pr-reviewer - INFO - Stored review 18 for PR #126739
+2025-04-29 01:54:12,817 - ai-pr-reviewer - INFO - Exported review to reviews/elastic-elasticsearch/PR-126739.md
+2025-04-29 01:54:15,962 - ai-pr-reviewer - INFO - Reviewing PR #124708 in elastic/elasticsearch: Throw exception for unknown token in RestIndexPutAliasAction
+2025-04-29 01:54:19,604 - ai-pr-reviewer - INFO - Generated PR summary
+2025-04-29 01:54:20,189 - ai-pr-reviewer - INFO - Generated review for docs/changelog/124708.yaml
+2025-04-29 01:54:25,098 - ai-pr-reviewer - INFO - Generated review for rest-api-spec/src/yamlRestTest/resources/rest-api-spec/test/indices.put_alias/10_basic.yml
+2025-04-29 01:54:30,673 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/IndexFeatures.java
+2025-04-29 01:54:37,215 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/rest/action/admin/indices/RestIndexPutAliasAction.java
+2025-04-29 01:54:44,997 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/esql/qa/security/src/javaRestTest/java/org/elasticsearch/xpack/esql/EsqlSecurityIT.java
+2025-04-29 01:54:54,055 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/security/qa/multi-cluster/src/javaRestTest/java/org/elasticsearch/xpack/remotecluster/RemoteClusterSecurityDataStreamEsqlRcs1IT.java
+2025-04-29 01:54:54,096 - ai-pr-reviewer - INFO - Stored review for PR #124708 in elastic/elasticsearch, review ID: 19
+2025-04-29 01:54:54,121 - ai-pr-reviewer - INFO - Stored review 19 for PR #124708
+2025-04-29 01:54:54,136 - ai-pr-reviewer - INFO - Exported review to reviews/elastic-elasticsearch/PR-124708.md
+2025-04-29 01:54:55,137 - ai-pr-reviewer - INFO - Reviewing PR #127483 in elastic/elasticsearch: Add tests for block loaders of multifields
+2025-04-29 01:54:58,729 - ai-pr-reviewer - INFO - Generated PR summary
+2025-04-29 01:55:04,438 - ai-pr-reviewer - INFO - Generated review for modules/mapper-extras/src/main/java/org/elasticsearch/index/mapper/extras/ScaledFloatFieldMapper.java
+2025-04-29 01:55:10,875 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/mapper/BooleanFieldMapper.java
+2025-04-29 01:55:15,975 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/mapper/DateFieldMapper.java
+2025-04-29 01:55:26,256 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/mapper/GeoPointFieldMapper.java
+2025-04-29 01:55:31,128 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/mapper/IpFieldMapper.java
+2025-04-29 01:55:37,367 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/mapper/KeywordFieldMapper.java
+2025-04-29 01:55:43,180 - ai-pr-reviewer - INFO - Generated review for server/src/main/java/org/elasticsearch/index/mapper/NumberFieldMapper.java
+2025-04-29 01:55:57,002 - ai-pr-reviewer - INFO - Generated review for server/src/test/java/org/elasticsearch/index/mapper/blockloader/GeoPointFieldBlockLoaderTests.java
+2025-04-29 01:56:08,201 - ai-pr-reviewer - INFO - Generated review for server/src/test/java/org/elasticsearch/index/mapper/blockloader/TextFieldWithParentBlockLoaderTests.java
+2025-04-29 01:56:13,172 - ai-pr-reviewer - INFO - Generated review for test/framework/src/main/java/org/elasticsearch/datageneration/datasource/DataSourceRequest.java
+2025-04-29 01:56:24,736 - ai-pr-reviewer - INFO - Generated review for test/framework/src/main/java/org/elasticsearch/datageneration/datasource/DefaultMappingParametersHandler.java
+2025-04-29 01:56:31,061 - ai-pr-reviewer - INFO - Generated review for test/framework/src/main/java/org/elasticsearch/datageneration/MappingGenerator.java
+2025-04-29 01:56:40,174 - ai-pr-reviewer - INFO - Generated review for test/framework/src/main/java/org/elasticsearch/index/mapper/BlockLoaderTestCase.java
+2025-04-29 01:56:49,458 - ai-pr-reviewer - INFO - Generated review for test/framework/src/main/java/org/elasticsearch/index/mapper/BlockLoaderTestRunner.java
+2025-04-29 01:56:58,669 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/mapper-aggregate-metric/src/test/java/org/elasticsearch/xpack/aggregatemetric/mapper/AggregateMetricDoubleFieldBlockLoaderTests.java
+2025-04-29 01:57:06,335 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/mapper-constant-keyword/src/test/java/org/elasticsearch/xpack/constantkeyword/mapper/ConstantKeywordFieldBlockLoaderTests.java
+2025-04-29 01:57:11,798 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/mapper-unsigned-long/src/main/java/org/elasticsearch/xpack/unsignedlong/UnsignedLongFieldMapper.java
+2025-04-29 01:57:17,541 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/spatial/src/main/java/org/elasticsearch/xpack/spatial/index/mapper/GeoShapeWithDocValuesFieldMapper.java
+2025-04-29 01:57:24,784 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/spatial/src/main/java/org/elasticsearch/xpack/spatial/index/mapper/ShapeFieldMapper.java
+2025-04-29 01:57:31,338 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/spatial/src/test/java/org/elasticsearch/xpack/spatial/index/mapper/GeoShapeFieldBlockLoaderTests.java
+2025-04-29 01:57:35,536 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/spatial/src/test/java/org/elasticsearch/xpack/spatial/index/mapper/PointFieldBlockLoaderTests.java
+2025-04-29 01:57:43,542 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/spatial/src/test/java/org/elasticsearch/xpack/spatial/index/mapper/ShapeFieldBlockLoaderTests.java
+2025-04-29 01:57:43,600 - ai-pr-reviewer - INFO - Stored review for PR #127483 in elastic/elasticsearch, review ID: 20
+2025-04-29 01:57:43,609 - ai-pr-reviewer - INFO - Stored review 20 for PR #127483
+2025-04-29 01:57:43,620 - ai-pr-reviewer - INFO - Exported review to reviews/elastic-elasticsearch/PR-127483.md
+2025-04-29 01:57:44,622 - ai-pr-reviewer - INFO - Reviewing PR #127488 in elastic/elasticsearch: Enable time-series block hash
+2025-04-29 01:57:49,915 - ai-pr-reviewer - INFO - Generated PR summary
+2025-04-29 01:58:02,633 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/esql/compute/src/main/java/org/elasticsearch/compute/aggregation/blockhash/TimeSeriesBlockHash.java
+2025-04-29 01:58:08,281 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/esql/compute/src/main/java/org/elasticsearch/compute/data/OrdinalBytesRefBlock.java
+2025-04-29 01:58:14,974 - ai-pr-reviewer - INFO - Generated review for x-pack/plugin/esql/compute/src/main/java/org/elasticsearch/compute/operator/TimeSeriesAggregationOperator.java
+2025-04-29 02:05:53,633 - ai-pr-reviewer - INFO - Connected to MySQL database: github_prs
+2025-04-29 02:05:53,645 - ai-pr-reviewer - INFO - Exported PR diagnostics to pr_diagnostics.txt
+2025-04-29 02:05:53,847 - ai-pr-reviewer - INFO - Review tables created or verified
+2025-04-29 02:05:53,852 - ai-pr-reviewer - INFO - Found 2 PRs for review (ignoring previous filters)
+2025-04-29 02:05:53,853 - ai-pr-reviewer - INFO - Found 2 PRs to review
+2025-04-29 02:05:53,863 - ai-pr-reviewer - INFO - Exported list of PRs to be reviewed to prs_to_review.txt
+2025-04-29 02:05:53,863 - ai-pr-reviewer - INFO - Reviewing PR #448 in casid/jte: Gradle Plugin - isolated Kotlin compiler
+2025-04-29 02:06:03,434 - ai-pr-reviewer - INFO - Generated PR summary
+2025-04-29 02:06:14,225 - ai-pr-reviewer - INFO - Generated review for jte-gradle-plugin/build.gradle.kts
+2025-04-29 02:06:20,976 - ai-pr-reviewer - INFO - Generated review for jte-gradle-plugin/src/main/java/gg/jte/gradle/JteGradle.java
+2025-04-29 02:06:28,790 - ai-pr-reviewer - INFO - Generated review for test/jte-runtime-cp-test-models-gradle-kotlin-versionmismatch/build.gradle.kts
+2025-04-29 02:06:35,041 - ai-pr-reviewer - INFO - Generated review for test/jte-runtime-cp-test-models-gradle-kotlin-versionmismatch/gradle/wrapper/gradle-wrapper.properties
+2025-04-29 02:06:46,720 - ai-pr-reviewer - INFO - Generated review for test/jte-runtime-cp-test-models-gradle-kotlin-versionmismatch/gradlew
+2025-04-29 02:06:56,250 - ai-pr-reviewer - INFO - Generated review for test/jte-runtime-cp-test-models-gradle-kotlin-versionmismatch/gradlew.bat
+2025-04-29 02:07:03,921 - ai-pr-reviewer - INFO - Generated review for test/jte-runtime-cp-test-models-gradle-kotlin-versionmismatch/settings.gradle
+2025-04-29 02:07:11,809 - ai-pr-reviewer - INFO - Generated review for test/jte-runtime-cp-test-models-gradle-kotlin-versionmismatch/src/main/jte/exceptionLineNumber1.kte
+2025-04-29 02:07:18,090 - ai-pr-reviewer - INFO - Generated review for test/jte-runtime-cp-test-models-gradle-kotlin-versionmismatch/src/main/jte/helloWorld.kte
+2025-04-29 02:07:22,518 - ai-pr-reviewer - INFO - Generated review for test/jte-runtime-cp-test-models-gradle-kotlin-versionmismatch/src/main/jte/layout.kte
+2025-04-29 02:07:26,942 - ai-pr-reviewer - INFO - Generated review for test/jte-runtime-cp-test-models-gradle-kotlin-versionmismatch/src/main/jte/main.kte
+2025-04-29 02:07:33,595 - ai-pr-reviewer - INFO - Generated review for test/jte-runtime-cp-test-models-gradle-kotlin-versionmismatch/src/main/jte/tag/unused.kte
+2025-04-29 02:07:34,164 - ai-pr-reviewer - INFO - Generated review for test/jte-runtime-cp-test-models-gradle-kotlin-versionmismatch/src/main/kotlin/test/Dummy.kt
+2025-04-29 02:07:43,090 - ai-pr-reviewer - INFO - Generated review for test/jte-runtime-cp-test-models-gradle-kotlin-versionmismatch/src/main/kotlin/test/Model.kt
+2025-04-29 02:07:50,597 - ai-pr-reviewer - INFO - Generated review for test/jte-runtime-cp-test-models-gradle-kotlin-versionmismatch/src/test/kotlin/gg/jte/TemplateEngineTest.kt
+2025-04-29 02:07:50,626 - ai-pr-reviewer - INFO - Stored review for PR #448 in casid/jte, review ID: 1
+2025-04-29 02:07:50,632 - ai-pr-reviewer - INFO - Stored review 1 for PR #448
+2025-04-29 02:07:50,638 - ai-pr-reviewer - INFO - Exported review to reviews/casid-jte/PR-448.md
+2025-04-29 02:07:51,640 - ai-pr-reviewer - INFO - Reviewing PR #450 in casid/jte: Add some more config properties to jte-models.
+2025-04-29 02:07:55,905 - ai-pr-reviewer - INFO - Generated PR summary
+2025-04-29 02:08:01,592 - ai-pr-reviewer - INFO - Generated review for jte-models/src/main/java/gg/jte/models/generator/ModelConfig.java
+2025-04-29 02:08:09,884 - ai-pr-reviewer - INFO - Generated review for jte-models/src/main/java/gg/jte/models/generator/ModelExtension.java
+2025-04-29 02:08:17,348 - ai-pr-reviewer - INFO - Generated review for jte-models/src/main/java/gg/jte/models/generator/SquashBlanksOutput.java
+2025-04-29 02:08:21,759 - ai-pr-reviewer - INFO - Generated review for jte-models/src/main/jte/dynamictemplates/kmain.jte
+2025-04-29 02:08:26,298 - ai-pr-reviewer - INFO - Generated review for jte-models/src/main/jte/dynamictemplates/main.jte
+2025-04-29 02:08:31,044 - ai-pr-reviewer - INFO - Generated review for jte-models/src/main/jte/statictemplates/kmain.jte
+2025-04-29 02:08:37,426 - ai-pr-reviewer - INFO - Generated review for jte-models/src/main/jte/statictemplates/main.jte
+2025-04-29 02:08:47,293 - ai-pr-reviewer - INFO - Generated review for test/jte-runtime-cp-test-models-gradle/build.gradle
+2025-04-29 02:08:54,537 - ai-pr-reviewer - INFO - Generated review for test/jte-runtime-cp-test-models-gradle/src/main/java/test/Requires.java
+2025-04-29 02:08:59,086 - ai-pr-reviewer - INFO - Generated review for test/jte-runtime-cp-test-models-gradle/src/main/java/test/Secondary.java
+2025-04-29 02:09:04,680 - ai-pr-reviewer - INFO - Generated review for test/jte-runtime-cp-test-models-gradle/src/main/java/test/Singleton.java
+2025-04-29 02:09:16,532 - ai-pr-reviewer - INFO - Generated review for test/jte-runtime-cp-test-models-gradle/src/test/java/gg/jte/TemplateEngineTest.java
+2025-04-29 02:09:16,559 - ai-pr-reviewer - INFO - Stored review for PR #450 in casid/jte, review ID: 2
+2025-04-29 02:09:16,565 - ai-pr-reviewer - INFO - Stored review 2 for PR #450
+2025-04-29 02:09:16,573 - ai-pr-reviewer - INFO - Exported review to reviews/casid-jte/PR-450.md
+2025-04-29 02:09:17,575 - ai-pr-reviewer - INFO - Reviewed 2 PRs
+2025-04-29 02:09:17,576 - ai-pr-reviewer - INFO - Disconnected from MySQL database
