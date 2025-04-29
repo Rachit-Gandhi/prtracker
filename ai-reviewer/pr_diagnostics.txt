@@ -1,0 +1,7 @@
+Total PRs in database: 0
+
+PRs by repository:
+
+PRs updated in the last 30 days: 0
+
+Most recently updated PRs:

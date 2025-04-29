@@ -3,7 +3,7 @@ services:
     image: mysql:8.0
     container_name: github-pr-mysql
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD:-rootpassword}"
       MYSQL_DATABASE: github_prs
       MYSQL_USER: pruser
       MYSQL_PASSWORD: prpassword
@@ -101,10 +101,41 @@ services:
       - REVIEW_ONLY_OPEN_PRS=${REVIEW_ONLY_OPEN_PRS:-true}
       - DAYS_SINCE_UPDATE=${DAYS_SINCE_UPDATE:-7}
       - INITIAL_WAIT_TIME=${INITIAL_WAIT_TIME:-120}
+      - AI_REVIEW_INTERVAL=${AI_REVIEW_INTERVAL:-7200}
     restart: on-failure
-    command: sh -c "echo 'Waiting for PR fetch to complete...' && sleep ${INITIAL_WAIT_TIME:-120} && while true; do python /app/ai-pr-reviewer.py && echo 'AI review completed. Next run in ${AI_REVIEW_INTERVAL:-7200} seconds.' || echo 'AI review failed. Will retry later.'; sleep ${AI_REVIEW_INTERVAL:-7200}; done"
+    entrypoint: /bin/bash
+    command: /app/run.sh
     volumes:
       - ./ai-reviewer:/app
+      - pr-coordination:/coordination
+      
+  # New PR Exporter service
+  pr-exporter:
+    build:
+      context: ./pr-exporter
+      dockerfile: Dockerfile
+    container_name: github-pr-exporter
+    depends_on:
+      mysql:
+        condition: service_healthy
+      ai-reviewer:
+        condition: service_started
+    environment:
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USER=pruser
+      - DB_PASSWORD=prpassword
+      - DB_NAME=github_prs
+      - OUTPUT_DIR=/app/exported_prs
+      - EXPORT_CHECK_INTERVAL=${EXPORT_CHECK_INTERVAL:-30}
+    # Use a shared volume with ai-reviewer to coordinate
+    volumes:
+      - ./pr-exporter:/app
+      - ./exported_prs:/app/exported_prs
+      - pr-coordination:/coordination
+    entrypoint: /bin/bash
+    command: /app/run.sh
 
 volumes:
   mysql-data:
+  pr-coordination:

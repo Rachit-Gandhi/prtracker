@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"database/sql"
-	"encoding/json"
 	"fmt"
 	"log"
 	"os"
@@ -34,38 +33,38 @@ type Repository struct {
 
 // Application configuration
 type Config struct {
-	DB                DBConfig
-	GitHubToken       string
-	Repositories      []Repository
-	FetchSinceDays    int
-	Concurrency       int     // Number of concurrent workers
-	RateLimitPerHour  float64 // GitHub API rate limit per hour
-	ResumeFromLastRun bool    // Whether to resume from last run
+	DB               DBConfig
+	GitHubToken      string
+	Repositories     []Repository
+	FetchSinceDays   int
+	Concurrency      int     // Number of concurrent workers
+	RateLimitPerHour float64 // GitHub API rate limit per hour
+	MaxPRsToProcess  int     // Maximum number of PRs to process per repository
 }
 
 // PullRequest represents a GitHub pull request with diffs and comments
 type PullRequest struct {
-	ID                int64
-	Number            int
-	Title             string
-	CreatedAt         time.Time
-	UpdatedAt         time.Time
-	State             string
-	UserLogin         string
-	Diffs             string
-	Comments          []PRComment
-	Reviews           []PRReview
-	Patches           []PRPatch
-	RepoOwner         string
-	RepoName          string
-	FilesChanged      int
-	Additions         int
-	Deletions         int
-	CommitCount       int
-	MergeableState    string
-	BaseCommitSHA     string    // Base commit SHA
-	BaseCommitLink    string    // Link to base commit in GitHub
-	LastProcessedTime time.Time // For tracking extraction progress
+	ID             int64
+	Number         int
+	Title          string
+	CreatedAt      time.Time
+	UpdatedAt      time.Time
+	State          string
+	UserLogin      string
+	Diffs          string
+	Comments       []PRComment
+	Reviews        []PRReview
+	Patches        []PRPatch
+	RepoOwner      string
+	RepoName       string
+	FilesChanged   int
+	Additions      int
+	Deletions      int
+	CommitCount    int
+	MergeableState string
+	BaseCommitSHA  string    // Base commit SHA
+	BaseCommitLink string    // Link to base commit in GitHub
+	ProcessedTime  time.Time // When this PR was processed
 }
 
 // PRComment represents a comment on a pull request
@@ -110,17 +109,6 @@ type RateLimitedClient struct {
 	Mutex sync.Mutex
 }
 
-// ProcessingState tracks the current processing state
-type ProcessingState struct {
-	LastProcessedRepo  string
-	LastProcessedPR    int
-	LastProcessedTime  time.Time
-	ProcessedPRs       int
-	SkippedPRs         int
-	TotalRequestsMade  int
-	RateLimitRemaining int
-}
-
 // PRStats represents statistics for a pull request
 type PRStats struct {
 	FilesChanged int
@@ -129,9 +117,6 @@ type PRStats struct {
 	CommitCount  int
 	Patches      []PRPatch
 }
-
-// ProgressFileName is the name of the file to store progress
-const ProgressFileName = "github_pr_tracker_progress.json"
 
 func main() {
 	// Load configuration
@@ -152,22 +137,15 @@ func main() {
 	// Setup GitHub client with rate limiting
 	client := setupRateLimitedClient(config.GitHubToken, config.RateLimitPerHour)
 
-	// Load previous progress if resuming
-	var state ProcessingState
-	if config.ResumeFromLastRun {
-		state = loadProgress()
-		log.Printf("Resuming from previous run. Last processed repo: %s, PR: %d",
-			state.LastProcessedRepo, state.LastProcessedPR)
-	}
+	// Process each repository
+	log.Printf("Starting PR processing for %d repositories", len(config.Repositories))
+	log.Printf("Maximum PRs per repository: %d", config.MaxPRsToProcess)
 
 	// Prepare a channel for workers
 	type WorkItem struct {
 		Repo Repository
-		PRs  []PullRequest
-		Err  error
 	}
-	workChan := make(chan Repository, len(config.Repositories))
-	resultChan := make(chan WorkItem, len(config.Repositories))
+	workChan := make(chan WorkItem, len(config.Repositories))
 
 	// Start worker goroutines
 	var wg sync.WaitGroup
@@ -175,125 +153,47 @@ func main() {
 		wg.Add(1)
 		go func(workerID int) {
 			defer wg.Done()
-			for repo := range workChan {
-				// Skip repositories we've already fully processed if resuming
-				if config.ResumeFromLastRun &&
-					state.LastProcessedRepo != "" &&
-					fmt.Sprintf("%s/%s", repo.Owner, repo.Name) < state.LastProcessedRepo {
-					log.Printf("Worker %d: Skipping already processed repository %s/%s",
-						workerID, repo.Owner, repo.Name)
-					resultChan <- WorkItem{Repo: repo, PRs: nil, Err: nil}
+			for work := range workChan {
+				repo := work.Repo
+				log.Printf("Worker %d: Processing repository: %s/%s",
+					workerID, repo.Owner, repo.Name)
+
+				// Get pull requests from GitHub
+				prs, err := fetchPullRequests(client, repo, config.FetchSinceDays, config.MaxPRsToProcess)
+				if err != nil {
+					log.Printf("Failed to fetch pull requests for %s/%s: %v",
+						repo.Owner, repo.Name, err)
 					continue
 				}
 
-				log.Printf("Worker %d: Processing repository: %s/%s", workerID, repo.Owner, repo.Name)
-
-				// Get last processed PR number for this repo
-				lastPRNumber := 0
-				if config.ResumeFromLastRun &&
-					fmt.Sprintf("%s/%s", repo.Owner, repo.Name) == state.LastProcessedRepo {
-					lastPRNumber = state.LastProcessedPR
+				if len(prs) == 0 {
+					log.Printf("No pull requests found for %s/%s",
+						repo.Owner, repo.Name)
+					continue
 				}
 
-				// Get pull requests from GitHub
-				prs, err := fetchPullRequests(client, repo, config.FetchSinceDays, lastPRNumber)
+				// Store pull requests in the database
+				if err := storePullRequests(db, prs); err != nil {
+					log.Printf("Failed to store pull requests for %s/%s: %v",
+						repo.Owner, repo.Name, err)
+					continue
+				}
 
-				// Send result back
-				resultChan <- WorkItem{Repo: repo, PRs: prs, Err: err}
+				log.Printf("Successfully processed %d pull requests for %s/%s",
+					len(prs), repo.Owner, repo.Name)
 			}
 		}(i)
 	}
 
 	// Queue up all repositories
 	for _, repo := range config.Repositories {
-		workChan <- repo
+		workChan <- WorkItem{Repo: repo}
 	}
 	close(workChan)
 
-	// Process results as they come in
-	go func() {
-		for i := 0; i < len(config.Repositories); i++ {
-			result := <-resultChan
-
-			if result.Err != nil {
-				log.Printf("Failed to fetch pull requests for %s/%s: %v",
-					result.Repo.Owner, result.Repo.Name, result.Err)
-				continue
-			}
-
-			if result.PRs == nil || len(result.PRs) == 0 {
-				log.Printf("No new pull requests to process for %s/%s",
-					result.Repo.Owner, result.Repo.Name)
-				continue
-			}
-
-			// Store pull requests and their details in the database
-			if err := storePullRequests(db, result.PRs); err != nil {
-				log.Printf("Failed to store pull requests for %s/%s: %v",
-					result.Repo.Owner, result.Repo.Name, err)
-				continue
-			}
-
-			// Update progress
-			repoKey := fmt.Sprintf("%s/%s", result.Repo.Owner, result.Repo.Name)
-			state.LastProcessedRepo = repoKey
-			state.LastProcessedPR = result.PRs[len(result.PRs)-1].Number
-			state.LastProcessedTime = time.Now()
-			state.ProcessedPRs += len(result.PRs)
-
-			// Save progress
-			saveProgress(state)
-
-			log.Printf("Successfully processed %d pull requests for %s/%s",
-				len(result.PRs), result.Repo.Owner, result.Repo.Name)
-		}
-	}()
-
 	// Wait for all workers to finish
 	wg.Wait()
-
-	// Wait for result processing to finish
-	time.Sleep(time.Second)
-
-	// Final stats
-	log.Printf("Extraction complete. Processed %d PRs, skipped %d PRs.",
-		state.ProcessedPRs, state.SkippedPRs)
-
-	// Clear progress file if all done
-	if state.ProcessedPRs > 0 {
-		os.Remove(ProgressFileName)
-	}
-}
-
-// loadProgress loads the processing state from disk
-func loadProgress() ProcessingState {
-	var state ProcessingState
-
-	data, err := os.ReadFile(ProgressFileName)
-	if err != nil {
-		log.Printf("No previous progress file found, starting fresh")
-		return state
-	}
-
-	if err := json.Unmarshal(data, &state); err != nil {
-		log.Printf("Error loading progress file: %v", err)
-		return ProcessingState{}
-	}
-
-	return state
-}
-
-// saveProgress saves the processing state to disk
-func saveProgress(state ProcessingState) {
-	data, err := json.MarshalIndent(state, "", "  ")
-	if err != nil {
-		log.Printf("Error serializing progress: %v", err)
-		return
-	}
-
-	if err := os.WriteFile(ProgressFileName, data, 0644); err != nil {
-		log.Printf("Error saving progress file: %v", err)
-	}
+	log.Printf("Completed processing all repositories")
 }
 
 // setupRateLimitedClient sets up a GitHub client with rate limiting
@@ -338,12 +238,6 @@ func (c *RateLimitedClient) DoRequest(f func() (*github.Response, error)) (*gith
 	if resp != nil && resp.Rate.Limit > 0 {
 		c.RateState.Remaining = resp.Rate.Remaining
 		c.RateState.Reset = resp.Rate.Reset.Time
-
-		// Log rate limit status if we're getting low
-		if c.RateState.Remaining < 100 {
-			log.Printf("GitHub API rate limit: %d/%d remaining, resets in %v",
-				c.RateState.Remaining, resp.Rate.Limit, time.Until(c.RateState.Reset))
-		}
 	}
 
 	return resp, err
@@ -382,16 +276,16 @@ func loadConfig() Config {
 		DB: DBConfig{
 			Host:     getEnv("DB_HOST", "localhost"),
 			Port:     getIntEnv("DB_PORT", 3306),
-			User:     getEnv("DB_USER", "root"),
-			Password: getEnv("DB_PASSWORD", ""),
+			User:     getEnv("DB_USER", "pruser"),
+			Password: getEnv("DB_PASSWORD", "prpassword"),
 			DBName:   getEnv("DB_NAME", "github_prs"),
 		},
-		GitHubToken:       getEnv("GITHUB_TOKEN", ""),
-		Repositories:      repos,
-		FetchSinceDays:    getIntEnv("FETCH_SINCE_DAYS", 30),
-		Concurrency:       getIntEnv("CONCURRENCY", 5),              // Default to 5 concurrent workers
-		RateLimitPerHour:  getFloatEnv("RATE_LIMIT_PER_HOUR", 5000), // Default to GitHub's standard 5000 req/hour
-		ResumeFromLastRun: getBoolEnv("RESUME_FROM_LAST_RUN", true), // Default to resume from last run
+		GitHubToken:      getEnv("GITHUB_TOKEN", ""),
+		Repositories:     repos,
+		FetchSinceDays:   getIntEnv("FETCH_SINCE_DAYS", 30),
+		Concurrency:      getIntEnv("CONCURRENCY", 3),              // Default to 3 concurrent workers
+		RateLimitPerHour: getFloatEnv("RATE_LIMIT_PER_HOUR", 5000), // Default to GitHub's standard 5000 req/hour
+		MaxPRsToProcess:  getIntEnv("MAX_PRS_PER_REPO", 50),        // Default to 50 PRs per repo
 	}
 }
 
@@ -404,15 +298,6 @@ func getFloatEnv(key string, defaultValue float64) float64 {
 	var result float64
 	fmt.Sscanf(value, "%f", &result)
 	return result
-}
-
-// getBoolEnv gets an environment variable as a boolean or returns a default value
-func getBoolEnv(key string, defaultValue bool) bool {
-	value := os.Getenv(key)
-	if value == "" {
-		return defaultValue
-	}
-	return strings.ToLower(value) == "true" || value == "1"
 }
 
 // getEnv gets an environment variable or returns a default value
@@ -440,17 +325,38 @@ func connectToDatabase(config DBConfig) (*sql.DB, error) {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?parseTime=true",
 		config.User, config.Password, config.Host, config.Port, config.DBName)
 
-	db, err := sql.Open("mysql", dsn)
-	if err != nil {
-		return nil, err
+	// Add retry logic for database connection
+	var db *sql.DB
+	var err error
+	maxRetries := 5
+	retryDelay := 5 * time.Second
+
+	for i := 0; i < maxRetries; i++ {
+		db, err = sql.Open("mysql", dsn)
+		if err != nil {
+			log.Printf("Failed to open database connection (attempt %d/%d): %v",
+				i+1, maxRetries, err)
+			time.Sleep(retryDelay)
+			continue
+		}
+
+		// Test the connection
+		if err = db.Ping(); err != nil {
+			log.Printf("Failed to ping database (attempt %d/%d): %v",
+				i+1, maxRetries, err)
+			db.Close()
+			time.Sleep(retryDelay)
+			continue
+		}
+
+		// Success
+		log.Printf("Successfully connected to database %s at %s:%d",
+			config.DBName, config.Host, config.Port)
+		return db, nil
 	}
 
-	// Test the connection
-	if err = db.Ping(); err != nil {
-		return nil, err
-	}
-
-	return db, nil
+	return nil, fmt.Errorf("failed to connect to database after %d attempts: %v",
+		maxRetries, err)
 }
 
 // createTables creates the necessary tables if they don't exist
@@ -470,7 +376,7 @@ func createTables(db *sql.DB) error {
 		return err
 	}
 
-	// Create pull_requests table with expanded fields including base_commit fields
+	// Create pull_requests table with expanded fields
 	_, err = db.Exec(`
 		CREATE TABLE IF NOT EXISTS pull_requests (
 			id BIGINT PRIMARY KEY,
@@ -494,15 +400,14 @@ func createTables(db *sql.DB) error {
 			UNIQUE INDEX idx_repo_number (repo_owner, repo_name, number),
 			INDEX idx_user (user_login),
 			INDEX idx_state (state),
-			INDEX idx_updated (updated_at),
-			INDEX idx_base_commit (base_commit_sha)
+			INDEX idx_updated (updated_at)
 		)
 	`)
 	if err != nil {
 		return err
 	}
 
-	// Create pr_comments table with expanded fields
+	// Create pr_comments table
 	_, err = db.Exec(`
 		CREATE TABLE IF NOT EXISTS pr_comments (
 			id BIGINT PRIMARY KEY,
@@ -513,8 +418,7 @@ func createTables(db *sql.DB) error {
 			path VARCHAR(255),
 			position INT,
 			FOREIGN KEY (pr_id) REFERENCES pull_requests(id) ON DELETE CASCADE,
-			INDEX idx_pr_id (pr_id),
-			INDEX idx_user (user_login)
+			INDEX idx_pr_id (pr_id)
 		)
 	`)
 	if err != nil {
@@ -531,9 +435,7 @@ func createTables(db *sql.DB) error {
 			created_at DATETIME NOT NULL,
 			user_login VARCHAR(100) NOT NULL,
 			FOREIGN KEY (pr_id) REFERENCES pull_requests(id) ON DELETE CASCADE,
-			INDEX idx_pr_id (pr_id),
-			INDEX idx_user (user_login),
-			INDEX idx_state (state)
+			INDEX idx_pr_id (pr_id)
 		)
 	`)
 	if err != nil {
@@ -553,45 +455,19 @@ func createTables(db *sql.DB) error {
 			additions INT NOT NULL DEFAULT 0,
 			deletions INT NOT NULL DEFAULT 0,
 			FOREIGN KEY (pr_id) REFERENCES pull_requests(id) ON DELETE CASCADE,
-			UNIQUE INDEX idx_pr_path (pr_id, path),
-			INDEX idx_filename (filename),
-			INDEX idx_status (status)
+			UNIQUE INDEX idx_pr_path (pr_id, path)
 		)
 	`)
 	if err != nil {
 		return err
 	}
 
-	// Update schema for existing deployments: add base_commit_link if needed
-	var columnExists bool
-	err = db.QueryRow(`
-		SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS 
-		WHERE TABLE_SCHEMA = DATABASE() 
-		AND TABLE_NAME = 'pull_requests' 
-		AND COLUMN_NAME = 'base_commit_link'
-	`).Scan(&columnExists)
-
-	if err != nil && err != sql.ErrNoRows {
-		return err
-	}
-
-	if err == sql.ErrNoRows { // Column doesn't exist
-		_, err = db.Exec(`
-			ALTER TABLE pull_requests 
-			ADD COLUMN base_commit_link VARCHAR(255) AFTER base_commit_sha,
-			ADD COLUMN last_processed_time DATETIME AFTER base_commit_link
-		`)
-		if err != nil {
-			return err
-		}
-		log.Println("Added base_commit_link and last_processed_time columns to pull_requests table")
-	}
-
+	log.Println("Database tables created or verified successfully")
 	return nil
 }
 
 // fetchPullRequests fetches pull requests from GitHub
-func fetchPullRequests(client *RateLimitedClient, repo Repository, fetchSinceDays int, lastProcessedPR int) ([]PullRequest, error) {
+func fetchPullRequests(client *RateLimitedClient, repo Repository, fetchSinceDays, maxPRs int) ([]PullRequest, error) {
 	ctx := context.Background()
 
 	// Calculate the time since when to fetch PRs
@@ -603,14 +479,22 @@ func fetchPullRequests(client *RateLimitedClient, repo Repository, fetchSinceDay
 		Sort:      "updated",
 		Direction: "desc",
 		ListOptions: github.ListOptions{
-			PerPage: 100,
+			PerPage: 50, // Fetch in batches of 50
 		},
 	}
 
 	var allPRs []PullRequest
+	prsProcessed := 0
 
-	// Fetch all pages of pull requests
+	// Fetch pages of pull requests until we have enough or run out
 	for {
+		// Break if we've processed enough PRs
+		if prsProcessed >= maxPRs {
+			log.Printf("Reached max PRs limit (%d) for %s/%s",
+				maxPRs, repo.Owner, repo.Name)
+			break
+		}
+
 		var prs []*github.PullRequest
 		var resp *github.Response
 		var err error
@@ -623,7 +507,12 @@ func fetchPullRequests(client *RateLimitedClient, repo Repository, fetchSinceDay
 		})
 
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("API error: %v", err)
+		}
+
+		if len(prs) == 0 {
+			log.Printf("No more PRs to fetch for %s/%s", repo.Owner, repo.Name)
+			break
 		}
 
 		// Process each PR
@@ -633,31 +522,25 @@ func fetchPullRequests(client *RateLimitedClient, repo Repository, fetchSinceDay
 				continue
 			}
 
-			// Skip PRs we've already processed if resuming
-			if pr.GetNumber() <= lastProcessedPR {
-				log.Printf("Skipping already processed PR #%d", pr.GetNumber())
-				continue
-			}
-
 			// Create the base commit link
 			baseCommitSHA := pr.GetBase().GetSHA()
 			baseCommitLink := fmt.Sprintf("https://github.com/%s/%s/commit/%s",
 				repo.Owner, repo.Name, baseCommitSHA)
 
 			prDetails := PullRequest{
-				ID:                pr.GetID(),
-				Number:            pr.GetNumber(),
-				Title:             pr.GetTitle(),
-				CreatedAt:         pr.GetCreatedAt().Time,
-				UpdatedAt:         pr.GetUpdatedAt().Time,
-				State:             pr.GetState(),
-				UserLogin:         pr.GetUser().GetLogin(),
-				RepoOwner:         repo.Owner,
-				RepoName:          repo.Name,
-				MergeableState:    pr.GetMergeableState(),
-				BaseCommitSHA:     baseCommitSHA,
-				BaseCommitLink:    baseCommitLink,
-				LastProcessedTime: time.Now(),
+				ID:             pr.GetID(),
+				Number:         pr.GetNumber(),
+				Title:          pr.GetTitle(),
+				CreatedAt:      pr.GetCreatedAt().Time,
+				UpdatedAt:      pr.GetUpdatedAt().Time,
+				State:          pr.GetState(),
+				UserLogin:      pr.GetUser().GetLogin(),
+				RepoOwner:      repo.Owner,
+				RepoName:       repo.Name,
+				MergeableState: pr.GetMergeableState(),
+				BaseCommitSHA:  baseCommitSHA,
+				BaseCommitLink: baseCommitLink,
+				ProcessedTime:  time.Now(),
 			}
 
 			// Get PR stats (files changed, additions, deletions)
@@ -694,15 +577,24 @@ func fetchPullRequests(client *RateLimitedClient, repo Repository, fetchSinceDay
 			prDetails.Reviews = reviews
 
 			allPRs = append(allPRs, prDetails)
-			log.Printf("Processed PR #%d: %s (Base: %s)", pr.GetNumber(), pr.GetTitle(), baseCommitLink)
+			prsProcessed++
+
+			log.Printf("Processed PR #%d: %s (State: %s)",
+				pr.GetNumber(), pr.GetTitle(), pr.GetState())
+
+			// Break if we've processed enough PRs
+			if prsProcessed >= maxPRs {
+				break
+			}
 		}
 
-		if resp.NextPage == 0 {
+		if resp.NextPage == 0 || prsProcessed >= maxPRs {
 			break
 		}
 		opts.Page = resp.NextPage
 	}
 
+	log.Printf("Fetched %d PRs for %s/%s", len(allPRs), repo.Owner, repo.Name)
 	return allPRs, nil
 }
 
@@ -939,191 +831,152 @@ func getPRReviews(client *RateLimitedClient, owner, repo string, number int) ([]
 
 // storePullRequests stores the pull requests and their details in the database
 func storePullRequests(db *sql.DB, prs []PullRequest) error {
-	// Start a transaction
-	tx, err := db.Begin()
-	if err != nil {
-		return err
-	}
-	defer func() {
-		if err != nil {
-			tx.Rollback()
-			return
-		}
-		err = tx.Commit()
-	}()
-
-	// Prepare statements
-	insertRepoStmt, err := tx.Prepare(`
-		INSERT INTO repositories (id, owner, name, created_at, updated_at)
-		VALUES (?, ?, ?, NOW(), NOW())
-		ON DUPLICATE KEY UPDATE updated_at = NOW()
-	`)
-	if err != nil {
-		return err
-	}
-	defer insertRepoStmt.Close()
-
-	insertPRStmt, err := tx.Prepare(`
-		INSERT INTO pull_requests (id, repo_owner, repo_name, number, title, created_at, updated_at, 
-			state, user_login, diffs, files_changed, additions, deletions, commit_count, 
-			mergeable_state, base_commit_sha, base_commit_link, last_processed_time)
-		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-		ON DUPLICATE KEY UPDATE
-			title = VALUES(title),
-			updated_at = VALUES(updated_at),
-			state = VALUES(state),
-			diffs = VALUES(diffs),
-			files_changed = VALUES(files_changed),
-			additions = VALUES(additions),
-			deletions = VALUES(deletions),
-			commit_count = VALUES(commit_count),
-			mergeable_state = VALUES(mergeable_state),
-			base_commit_sha = VALUES(base_commit_sha),
-			base_commit_link = VALUES(base_commit_link),
-			last_processed_time = VALUES(last_processed_time)
-	`)
-	if err != nil {
-		return err
-	}
-	defer insertPRStmt.Close()
-
-	insertCommentStmt, err := tx.Prepare(`
-		INSERT INTO pr_comments (id, pr_id, body, created_at, user_login, path, position)
-		VALUES (?, ?, ?, ?, ?, ?, ?)
-		ON DUPLICATE KEY UPDATE
-			body = VALUES(body),
-			path = VALUES(path),
-			position = VALUES(position)
-	`)
-	if err != nil {
-		return err
-	}
-	defer insertCommentStmt.Close()
-
-	insertReviewStmt, err := tx.Prepare(`
-		INSERT INTO pr_reviews (id, pr_id, body, state, created_at, user_login)
-		VALUES (?, ?, ?, ?, ?, ?)
-		ON DUPLICATE KEY UPDATE
-			body = VALUES(body),
-			state = VALUES(state)
-	`)
-	if err != nil {
-		return err
-	}
-	defer insertReviewStmt.Close()
-
-	insertPatchStmt, err := tx.Prepare(`
-		INSERT INTO pr_patches (pr_id, path, patch, filename, status, changes, additions, deletions)
-		VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-		ON DUPLICATE KEY UPDATE
-			patch = VALUES(patch),
-			status = VALUES(status),
-			changes = VALUES(changes),
-			additions = VALUES(additions),
-			deletions = VALUES(deletions)
-	`)
-	if err != nil {
-		return err
-	}
-	defer insertPatchStmt.Close()
-
-	// Delete existing data statements
-	deleteCommentsStmt, err := tx.Prepare(`
-		DELETE FROM pr_comments WHERE pr_id = ?
-	`)
-	if err != nil {
-		return err
-	}
-	defer deleteCommentsStmt.Close()
-
-	deleteReviewsStmt, err := tx.Prepare(`
-		DELETE FROM pr_reviews WHERE pr_id = ?
-	`)
-	if err != nil {
-		return err
-	}
-	defer deleteReviewsStmt.Close()
-
-	deletePatchesStmt, err := tx.Prepare(`
-		DELETE FROM pr_patches WHERE pr_id = ?
-	`)
-	if err != nil {
-		return err
-	}
-	defer deletePatchesStmt.Close()
-
 	// Process each repository
 	repoMap := make(map[string]bool)
 
-	// Insert each PR and its details
+	// Process each PR individually with its own transaction
 	for _, pr := range prs {
+		// Start a transaction for this PR
+		tx, err := db.Begin()
+		if err != nil {
+			log.Printf("Failed to begin transaction for PR #%d: %v", pr.Number, err)
+			continue
+		}
+
 		// Insert repository if not already done
 		repoKey := fmt.Sprintf("%s/%s", pr.RepoOwner, pr.RepoName)
 		if _, exists := repoMap[repoKey]; !exists {
-			_, err = insertRepoStmt.Exec(
-				repoKey, pr.RepoOwner, pr.RepoName,
-			)
+			_, err = tx.Exec(`
+				INSERT INTO repositories (id, owner, name, created_at, updated_at)
+				VALUES (?, ?, ?, NOW(), NOW())
+				ON DUPLICATE KEY UPDATE updated_at = NOW()
+			`, repoKey, pr.RepoOwner, pr.RepoName)
+
 			if err != nil {
-				return fmt.Errorf("failed to insert repository %s: %v", repoKey, err)
+				tx.Rollback()
+				log.Printf("Failed to insert repository %s: %v", repoKey, err)
+				continue
 			}
 			repoMap[repoKey] = true
 		}
 
 		// Insert or update the PR
-		_, err = insertPRStmt.Exec(
+		_, err = tx.Exec(`
+			INSERT INTO pull_requests (
+				id, repo_owner, repo_name, number, title, created_at, updated_at,
+				state, user_login, diffs, files_changed, additions, deletions,
+				commit_count, mergeable_state, base_commit_sha, base_commit_link, last_processed_time
+			) VALUES (
+				?, ?, ?, ?, ?, ?, ?,
+				?, ?, ?, ?, ?, ?,
+				?, ?, ?, ?, ?
+			) ON DUPLICATE KEY UPDATE
+				title = VALUES(title),
+				updated_at = VALUES(updated_at),
+				state = VALUES(state),
+				diffs = VALUES(diffs),
+				files_changed = VALUES(files_changed),
+				additions = VALUES(additions),
+				deletions = VALUES(deletions),
+				commit_count = VALUES(commit_count),
+				mergeable_state = VALUES(mergeable_state),
+				base_commit_sha = VALUES(base_commit_sha),
+				base_commit_link = VALUES(base_commit_link),
+				last_processed_time = VALUES(last_processed_time)
+		`,
 			pr.ID, pr.RepoOwner, pr.RepoName, pr.Number, pr.Title, pr.CreatedAt, pr.UpdatedAt,
 			pr.State, pr.UserLogin, pr.Diffs, pr.FilesChanged, pr.Additions, pr.Deletions,
-			pr.CommitCount, pr.MergeableState, pr.BaseCommitSHA, pr.BaseCommitLink, pr.LastProcessedTime,
-		)
+			pr.CommitCount, pr.MergeableState, pr.BaseCommitSHA, pr.BaseCommitLink, pr.ProcessedTime)
+
 		if err != nil {
-			return fmt.Errorf("failed to insert PR #%d: %v", pr.Number, err)
+			tx.Rollback()
+			log.Printf("Failed to insert PR #%d: %v", pr.Number, err)
+			continue
 		}
 
 		// Delete existing data for this PR to avoid duplicates
-		_, err = deleteCommentsStmt.Exec(pr.ID)
+		_, err = tx.Exec("DELETE FROM pr_comments WHERE pr_id = ?", pr.ID)
 		if err != nil {
-			return fmt.Errorf("failed to delete existing comments for PR #%d: %v", pr.Number, err)
+			tx.Rollback()
+			log.Printf("Failed to delete existing comments for PR #%d: %v", pr.Number, err)
+			continue
 		}
 
-		_, err = deleteReviewsStmt.Exec(pr.ID)
+		_, err = tx.Exec("DELETE FROM pr_reviews WHERE pr_id = ?", pr.ID)
 		if err != nil {
-			return fmt.Errorf("failed to delete existing reviews for PR #%d: %v", pr.Number, err)
+			tx.Rollback()
+			log.Printf("Failed to delete existing reviews for PR #%d: %v", pr.Number, err)
+			continue
 		}
 
-		_, err = deletePatchesStmt.Exec(pr.ID)
+		_, err = tx.Exec("DELETE FROM pr_patches WHERE pr_id = ?", pr.ID)
 		if err != nil {
-			return fmt.Errorf("failed to delete existing patches for PR #%d: %v", pr.Number, err)
+			tx.Rollback()
+			log.Printf("Failed to delete existing patches for PR #%d: %v", pr.Number, err)
+			continue
 		}
 
 		// Insert each comment
 		for _, comment := range pr.Comments {
-			_, err = insertCommentStmt.Exec(
-				comment.ID, pr.ID, comment.Body, comment.CreatedAt, comment.UserLogin, comment.Path, comment.Position,
-			)
+			_, err = tx.Exec(`
+				INSERT INTO pr_comments (id, pr_id, body, created_at, user_login, path, position)
+				VALUES (?, ?, ?, ?, ?, ?, ?)
+				ON DUPLICATE KEY UPDATE
+					body = VALUES(body),
+					path = VALUES(path),
+					position = VALUES(position)
+			`, comment.ID, pr.ID, comment.Body, comment.CreatedAt, comment.UserLogin, comment.Path, comment.Position)
+
 			if err != nil {
-				return fmt.Errorf("failed to insert comment for PR #%d: %v", pr.Number, err)
+				log.Printf("Warning: Failed to insert comment for PR #%d: %v", pr.Number, err)
+				// Continue despite error with comments
 			}
 		}
 
 		// Insert each review
 		for _, review := range pr.Reviews {
-			_, err = insertReviewStmt.Exec(
-				review.ID, pr.ID, review.Body, review.State, review.CreatedAt, review.UserLogin,
-			)
+			_, err = tx.Exec(`
+				INSERT INTO pr_reviews (id, pr_id, body, state, created_at, user_login)
+				VALUES (?, ?, ?, ?, ?, ?)
+				ON DUPLICATE KEY UPDATE
+					body = VALUES(body),
+					state = VALUES(state)
+			`, review.ID, pr.ID, review.Body, review.State, review.CreatedAt, review.UserLogin)
+
 			if err != nil {
-				return fmt.Errorf("failed to insert review for PR #%d: %v", pr.Number, err)
+				log.Printf("Warning: Failed to insert review for PR #%d: %v", pr.Number, err)
+				// Continue despite error with reviews
 			}
 		}
 
 		// Insert each patch
 		for _, patch := range pr.Patches {
-			_, err = insertPatchStmt.Exec(
-				pr.ID, patch.Path, patch.Patch, patch.Filename, patch.Status, patch.Changes, patch.Additions, patch.Deletions,
-			)
+			_, err = tx.Exec(`
+				INSERT INTO pr_patches (pr_id, path, patch, filename, status, changes, additions, deletions)
+				VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+				ON DUPLICATE KEY UPDATE
+					patch = VALUES(patch),
+					status = VALUES(status),
+					changes = VALUES(changes),
+					additions = VALUES(additions),
+					deletions = VALUES(deletions)
+			`, pr.ID, patch.Path, patch.Patch, patch.Filename, patch.Status, patch.Changes, patch.Additions, patch.Deletions)
+
 			if err != nil {
-				return fmt.Errorf("failed to insert patch for PR #%d: %v", pr.Number, err)
+				log.Printf("Warning: Failed to insert patch for PR #%d: %v", pr.Number, err)
+				// Continue despite error with patches
 			}
 		}
+
+		// Commit transaction for this PR
+		err = tx.Commit()
+		if err != nil {
+			tx.Rollback()
+			log.Printf("Failed to commit transaction for PR #%d: %v", pr.Number, err)
+			continue
+		}
+
+		log.Printf("Successfully stored PR #%d in database", pr.Number)
 	}
 
 	return nil
