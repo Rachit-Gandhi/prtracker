@@ -63,10 +63,12 @@ class DatabaseConnection:
             
             cursor = self.connection.cursor(dictionary=True)
             
+            # Fixed query: Include updated_at in SELECT clause
             query = """
-                SELECT DISTINCT pr.id, pr.repo_owner, pr.repo_name, pr.number, pr.title
+                SELECT pr.id, pr.repo_owner, pr.repo_name, pr.number, pr.title, pr.updated_at
                 FROM pull_requests pr
                 JOIN ai_pr_reviews rev ON pr.id = rev.pr_id
+                GROUP BY pr.id, pr.repo_owner, pr.repo_name, pr.number, pr.title, pr.updated_at
                 ORDER BY pr.updated_at DESC
             """
             
