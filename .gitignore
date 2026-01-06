@@ -1,2 +1,24 @@
+# Binaries
+bin/
+*.exe
+*.test
+*.out
+
+# Dependencies
+vendor/
+
+# Environment variables
 .env
-go.sum
+
+# IDEs
+.vscode/
+.idea/
+
+# OS specific
+.DS_Store
+
+# Legacy artifacts (optional specific ignores for legacy folder if needed)
+legacy_prototype/exported_prs/
+legacy_prototype/results/
+legacy_prototype/ai-reviewer/reviews/
+legacy_prototype/*.log
